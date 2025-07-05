@@ -1,5 +1,11 @@
-import { ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { EnrollmentWithCourseAndProgress } from './interfaces/enrollment.interface';
 
 @Injectable()
 export class EnrollmentService {
@@ -10,27 +16,33 @@ export class EnrollmentService {
       where: { userId, courseId },
     });
 
-    if (existing) throw new ConflictException('Already enrolled');
+    if (existing) {
+      throw new ConflictException('User is already enrolled in this course.');
+    }
 
-    // Check prerequisites
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
       include: { prerequisite: true },
     });
 
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    // Check if user has completed the prerequisite course
     if (course?.prerequisiteCourseId) {
       const prerequisiteEnrollment = await this.prisma.enrollment.findFirst({
         where: {
           userId,
           courseId: course.prerequisiteCourseId,
           progress: {
-            some: { completed: true }, 
+            some: { completed: true }, // Assuming `completed: boolean` exists in `Progress`
           },
         },
       });
 
       if (!prerequisiteEnrollment) {
-        throw new ForbiddenException('Prerequisite course not completed');
+        throw new ForbiddenException('You must complete the prerequisite course first.');
       }
     }
 
@@ -42,14 +54,37 @@ export class EnrollmentService {
     });
   }
 
-  async getDashboard(userId: string) {
-    return this.prisma.enrollment.findMany({
+  async getDashboard(userId: string): Promise<EnrollmentWithCourseAndProgress[]> {
+    const enrollments = await this.prisma.enrollment.findMany({
       where: { userId },
       include: {
-        course: true,
-        progress: true,
+        course: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            category: true,
+            difficulty: true,
+            published: true,
+          },
+        },
+        progress: {
+          select: {
+            lessonId: true,
+            completed: true,
+          },
+        },
       },
     });
+
+    return enrollments.map((enrollment) => ({
+      id: enrollment.id,
+      userId: enrollment.userId,
+      courseId: enrollment.courseId,
+      enrolledAt: enrollment.enrolledAt,
+      course: enrollment.course,
+      progress: enrollment.progress,
+    }));
   }
 
   async unenrollUserFromCourse(userId: string, courseId: string) {

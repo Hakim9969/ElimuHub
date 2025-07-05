@@ -20,5 +20,5 @@ export class CreateCourseDto {
 
   @IsOptional()
   @IsString()
-  prerequisites?: string;
+  prerequisiteCourseId: string; 
 }

@@ -46,7 +46,7 @@ model Course {
   category      String
   difficulty    Difficulty
   objectives    String?
-  prerequisites String           // Optional: Keep this for textual description
+  prerequisites String?           // Optional: Keep this for textual description
   published     Boolean          @default(false)
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt

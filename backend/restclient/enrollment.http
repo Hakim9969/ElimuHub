@@ -1,0 +1,48 @@
+### 🔐 Set your token and test variables here
+@token=your_jwt_token_here
+@courseId=replace-with-course-id
+
+# Optional: For deleting/unsubscribing tests
+@anotherCourseId=replace-with-course-id
+
+# Base URL (customize if needed)
+@baseUrl=http://localhost:3000
+
+---
+
+### 📥 Enroll in a Course
+POST {{baseUrl}}/enrollment/{{courseId}}/enroll
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+### 📤 Unenroll from a Course
+DELETE {{baseUrl}}/enrollment/{{anotherCourseId}}/unenroll
+Authorization: Bearer {{token}}
+
+###
+
+### 🧑‍🎓 Get Student Dashboard (Enrolled Courses + Progress)
+GET {{baseUrl}}/enrollment/me/dashboard
+Authorization: Bearer {{token}}
+
+###
+
+### ⚠️ Invalid Enrollment (Test Duplicate Enroll Attempt)
+POST {{baseUrl}}/enrollment/{{courseId}}/enroll
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+### 🔒 Try Enrollment Without Token (Should Fail)
+POST {{baseUrl}}/enrollment/{{courseId}}/enroll
+Content-Type: application/json
+
+###
+
+### 📄 Notes:
+# 1. Replace `{{token}}` with a real JWT (student account)
+# 2. Replace `{{courseId}}` and `{{anotherCourseId}}` with real course UUIDs
+# 3. Run each section individually in REST Client (VS Code or other)
