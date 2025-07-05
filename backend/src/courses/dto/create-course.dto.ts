@@ -21,4 +21,9 @@ export class CreateCourseDto {
   @IsOptional()
   @IsString()
   prerequisites?: string;
+
+  @IsOptional()
+  @IsString()
+   image?: string;
+
 }

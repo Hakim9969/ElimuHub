@@ -1,4 +1,52 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+import { ContentService } from './content.service';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/role-decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { CreateContentDto } from './dto/create-content.dto';
+import { UpdateContentDto } from './dto/update-content.dto';
 
-@Controller('content')
-export class ContentController {}
+@Controller('courses/:courseId/contents')
+@UseGuards(AuthGuard('jwt'), RolesGuard)
+@Roles('INSTRUCTOR')
+export class ContentController {
+  constructor(private readonly contentService: ContentService) {}
+
+  @Post()
+  create(
+    @Param('courseId') courseId: string,
+    @Body() dto: CreateContentDto,
+    @Req() req,
+  ) {
+    return this.contentService.create(courseId, req.user.sub, dto);
+  }
+
+  @Get()
+  findAll(@Param('courseId') courseId: string) {
+    return this.contentService.findAll(courseId);
+  }
+
+  @Patch('/:id')
+  update(@Param('id') id: string, @Body() dto: UpdateContentDto) {
+    return this.contentService.update(id, dto);
+  }
+
+  @Delete(':id')
+    @Roles('INSTRUCTOR', 'ADMIN')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @HttpCode(HttpStatus.NO_CONTENT)
+    remove(@Param('id') id: string, @Req() req) {
+      return this.contentService.remove(id, req.user.sub, req.user.role);}
+}

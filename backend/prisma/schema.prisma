@@ -47,14 +47,15 @@ model Course {
   difficulty    Difficulty
   objectives    String?
   prerequisites String?
-  published     Boolean          @default(false)
+  published     Boolean         @default(false)
+  image         String? //added image
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
 
   // Relations
   instructorId  String
   instructor    User             @relation("InstructorCourses", fields: [instructorId], references: [id])
-  modules       CourseModule[]
+  modules       Content[]
   enrollments   Enrollment[]
   quizzes       Quiz[]
   announcements Announcement[]
@@ -62,7 +63,7 @@ model Course {
   certificates  Certificate[]
 }
 
-model CourseModule {
+model Content {
   id        String     @id @default(uuid())
   title     String
   order     Int
@@ -83,7 +84,7 @@ model Lesson {
   createdAt  DateTime   @default(now())
 
   // Relations
-  module     CourseModule @relation(fields: [moduleId], references: [id])
+  module     Content @relation(fields: [moduleId], references: [id])
   progresses Progress[]
 }
 
