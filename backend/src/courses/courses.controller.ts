@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards, HttpCode, HttpStatus  } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/auth/decorators/role-decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -7,9 +19,8 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Controller('courses')
-
 export class CoursesController {
-    constructor(private readonly coursesService: CoursesService) {}
+  constructor(private readonly coursesService: CoursesService) {}
 
   @Post()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -45,8 +56,8 @@ export class CoursesController {
   @Delete(':id')
   @Roles('INSTRUCTOR', 'ADMIN')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @HttpCode(HttpStatus.NO_CONTENT) // 204 No Content
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string, @Req() req) {
-  return this.coursesService.remove(id, req.user.sub);
-}
+    return this.coursesService.remove(id, req.user.sub);
+  }
 }

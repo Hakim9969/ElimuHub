@@ -8,12 +8,13 @@ Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "NestJS for Beginners",
+  "title": "NestJ for Beginners",
   "description": "A complete intro course",
   "category": "Programming",
   "difficulty": "BEGINNER",
   "objectives": "Build APIs",
-  "prerequisites": "Basic JavaScript knowledge"
+  "prerequisites": "Basic JavaScript knowledge",
+  "image": "https://example.com/images/angular.png"
 }
 
 ###
@@ -48,5 +49,5 @@ Content-Type: application/json
 ###
 
 ### ❌ Delete Course
-DELETE http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
+DELETE http://localhost:3000/courses/ab1f49df-8094-476b-9692-876ac0dce926
 Authorization: Bearer {{instructor_token}}

@@ -30,4 +30,9 @@ export class UpdateCourseDto {
   @IsOptional()
   @IsBoolean()
   published?: boolean;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
+
 }
