@@ -1,0 +1,53 @@
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkN2M1ZWNiNi1hNTQ0LTQwODEtOTczOC02ZWYwODQzMDJiZjYiLCJlbWFpbCI6ImppbUBpbnN0cnVjdG9yLmNvbSIsInJvbGUiOiJJTlNUUlVDVE9SIiwiaWF0IjoxNzUxNzM4OTUwLCJleHAiOjE3NTE4MjUzNTB9.-CiyoVzsleltjqSrsFTuK-T8T-deBjJ-oDF-sbQi8Ro
+
+###
+
+### ✅ Create Course (Instructor Only)
+POST http://localhost:3000/courses
+Authorization: Bearer {{instructor_token}}
+Content-Type: application/json
+
+{
+  "title": "Testing",
+  "description": "A complete intro course",
+  "category": "Web Testing",
+  "difficulty": "BEGINNER",
+  "objectives": "learn Cypress",
+  "prerequisites": "Basic Cypress knowledge",
+  "image": "https://example.com/images/angular.png"
+}
+
+###
+
+### 📥 Get All Published Courses (Public)
+GET http://localhost:3000/courses
+
+###
+
+### 🧑‍🏫 Get My Courses (Instructor Only)
+GET http://localhost:3000/courses/my
+Authorization: Bearer {{instructor_token}}
+
+###
+
+### 📄 Get One Course by ID
+GET http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
+Authorization: Bearer {{instructor_token}}
+
+###
+
+### ✏️ Update Course
+PATCH http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
+Authorization: Bearer {{instructor_token}}
+Content-Type: application/json
+
+{
+  "title": "NestJS for Beginners - Updated",
+  "published": true
+}
+
+###
+
+### ❌ Delete Course
+DELETE http://localhost:3000/courses/ab1f49df-8094-476b-9692-876ac0dce926
+Authorization: Bearer {{instructor_token}}

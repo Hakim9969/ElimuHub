@@ -1,0 +1,175 @@
+@baseUrl = http://localhost:3000
+@courseId = cc5b10c5-d74a-451c-82c4-bc9aa56e7e46
+@quizId = 499e988f-0f40-40cb-b6a1-90619beeeeae
+@userId = fbacd7bc-875d-4fdb-8c41-bea9fc62ad7e
+@attemptId = 34c7281f-90d4-494f-81ae-2111f60102c6
+### 1. Create a new quiz
+POST {{baseUrl}}/quiz
+Content-Type: application/json
+
+{
+  "title": "JavaScript Fundamentals Quiz",
+  "description": "Test your knowledge of JavaScript basics",
+  "courseId": "cc5b10c5-d74a-451c-82c4-bc9aa56e7e46",
+  "timeLimit": 1800,
+  "passingScore": 70,
+  "maxAttempts": 3,
+  "published": true,
+  "questions": [
+    {
+      "type": "MCQ",
+      "text": "What is the correct way to declare a variable in JavaScript?",
+      "options": [
+        "var myVar = 5;",
+        "variable myVar = 5;",
+        "v myVar = 5;",
+        "declare myVar = 5;"
+      ],
+      "answer": "0",
+      "points": 10
+    },
+    {
+      "type": "MCQ",
+      "text": "Which method is used to add an element to the end of an array?",
+      "options": [
+        "append()",
+        "push()",
+        "add()",
+        "insert()"
+      ],
+      "answer": "1",
+      "points": 15
+    },
+    {
+      "type": "MCQ",
+      "text": "What does 'NaN' stand for in JavaScript?",
+      "options": [
+        "Not a Number",
+        "Null and Null",
+        "New Array Node",
+        "None of the above"
+      ],
+      "answer": "0",
+      "points": 10
+    }
+  ]
+}
+
+### 2. Get quiz by ID
+GET {{baseUrl}}/quiz/{{quizId}}
+
+### 3. Start a quiz attempt
+POST {{baseUrl}}/quiz/{{quizId}}/start
+Content-Type: application/json
+
+{
+  "userId": "fbacd7bc-875d-4fdb-8c41-bea9fc62ad7e"
+}
+
+### 4. Get quiz statistics
+GET {{baseUrl}}/quiz/{{quizId}}/stats
+
+### 5. Get user attempts
+GET {{baseUrl}}/quiz/user/{{userId}}/attempts?quizId={{quizId}}
+
+### 6. Submit an answer
+POST {{baseUrl}}/quiz/attempt/{{attemptId}}/answer
+Content-Type: application/json
+
+{
+  "questionId": "8f173168-d6d5-49c2-a5a3-f007fa69cec1",
+  "answer": 0
+}
+
+### 7. Submit another answer
+POST {{baseUrl}}/quiz/attempt/{{attemptId}}/answer
+Content-Type: application/json
+
+{
+  "questionId": "8f173168-d6d5-49c2-a5a3-f007fa69cec1",
+  "answer": 1
+}
+
+### 8. Submit final quiz
+POST {{baseUrl}}/quiz/attempt/attempt-id-789/submit
+
+### Alternative test data - Create another quiz
+POST {{baseUrl}}/quiz
+Content-Type: application/json
+
+{
+  "title": "Python Basics Quiz",
+  "description": "Test your Python programming knowledge",
+  "timeLimit": 2400,
+  "questions": [
+    {
+      "question": "Which of the following is the correct way to create a list in Python?",
+      "options": [
+        "list = [1, 2, 3]",
+        "list = (1, 2, 3)",
+        "list = {1, 2, 3}",
+        "list = <1, 2, 3>"
+      ],
+      "correctAnswer": 0,
+      "points": 10
+    },
+    {
+      "question": "What is the output of print(type([]))?",
+      "options": [
+        "<class 'list'>",
+        "<class 'array'>",
+        "<class 'tuple'>",
+        "<class 'dict'>"
+      ],
+      "correctAnswer": 0,
+      "points": 15
+    }
+  ]
+}
+
+### Test with different user
+POST {{baseUrl}}/quiz/quiz-id-123/start
+Content-Type: application/json
+
+{
+  "userId": "user-789",
+  "userName": "Jane Smith"
+}
+
+### Get attempts for different user
+GET {{baseUrl}}/quiz/user/user-789/attempts?quizId=quiz-id-123
+
+### Submit wrong answer (for testing)
+POST {{baseUrl}}/quiz/attempt/attempt-id-999/answer
+Content-Type: application/json
+
+{
+  "questionId": "question-1",
+  "selectedAnswer": 2,
+  "timeSpent": 60
+}
+
+### Test edge cases
+
+# Get non-existent quiz
+GET {{baseUrl}}/quiz/non-existent-id
+
+# Start quiz with minimal data
+POST {{baseUrl}}/quiz/quiz-id-123/start
+Content-Type: application/json
+
+{
+  "userId": "user-minimal"
+}
+
+# Submit answer with no time spent
+POST {{baseUrl}}/quiz/attempt/attempt-id-789/answer
+Content-Type: application/json
+
+{
+  "questionId": "question-3",
+  "selectedAnswer": 0
+}
+
+# Get user attempts without quizId filter
+GET {{baseUrl}}/quiz/user/user-456/attempts
