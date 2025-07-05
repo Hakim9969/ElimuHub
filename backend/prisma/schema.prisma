@@ -46,7 +46,7 @@ model Course {
   category      String
   difficulty    Difficulty
   objectives    String?
-  prerequisites String?
+  prerequisites String           // Optional: Keep this for textual description
   published     Boolean          @default(false)
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
@@ -60,7 +60,13 @@ model Course {
   announcements Announcement[]
   reviews       CourseReview[]
   certificates  Certificate[]
+
+  // Prerequisite course (new)
+  prerequisiteCourseId String?        // FK column (optional)
+  prerequisite         Course?        @relation("CoursePrerequisite", fields: [prerequisiteCourseId], references: [id])
+  prerequisiteFor      Course[]       @relation("CoursePrerequisite")
 }
+
 
 model CourseModule {
   id        String     @id @default(uuid())
