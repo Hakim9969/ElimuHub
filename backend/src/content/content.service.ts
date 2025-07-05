@@ -22,11 +22,24 @@ export class ContentService {
   }
 
   async findAll(courseId: string) {
-    return this.prisma.content.findMany({
-      where: { courseId },
-      orderBy: { order: 'asc' },
-    });
-  }
+  const contents = await this.prisma.content.findMany({
+    where: { courseId },
+    orderBy: { order: 'asc' },
+    include: {
+      lessons: {
+        orderBy: { createdAt: 'asc' },
+      },
+    },
+  });
+
+  // Rename "lessons" to "lesson"
+  return contents.map((content) => ({
+    ...content,
+    lesson: content.lessons,
+    lessons: undefined, // remove original "lessons" key
+  }));
+}
+
 
   async update(id: string, dto: UpdateContentDto) {
     const content = await this.prisma.content.findUnique({ where: { id } });
