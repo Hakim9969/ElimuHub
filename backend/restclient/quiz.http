@@ -1,0 +1,264 @@
+### Quiz API Testing - HTTP Requests
+
+# Set base URL (adjust as needed)
+@baseUrl = http://localhost:3000
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZTMzNTRlZS04ZWJjLTQ1MGYtYjBhNC04MGM0ZDM3YTljOWIiLCJlbWFpbCI6ImppbWphbUB3YWlnYW5qby5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTc0NjExMCwiZXhwIjoxNzUxODMyNTEwfQ.YKhPdNY20fiHsBxneL4gweXbw1YpiL3e7FhN4BaRUP8
+
+### 1. Create Quiz (Instructor Only)
+POST {{baseUrl}}/quiz
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "title": "React Quiz",
+  "description": "Test your knowledge of React",
+  "courseId":"eee984f1-98a3-49a2-b009-b5570e95fb3b",
+  "timeLimit": 180,
+  "passingScore": 70,
+  "maxAttempts": 3,
+  "published": true,
+  "questions": [
+    {
+      "type": "MCQ",
+      "text": "What is the correct way to declare a variable in JavaScript?",
+      "options": [
+        "var myVar = 5;",
+        "variable myVar = 5;",
+        "v myVar = 5;",
+        "declare myVar = 5;"
+      ],
+      "answer": "0",
+      "points": 10
+    },
+    {
+      "type": "MCQ",
+      "text": "Which method is used to add an element to the end of an array?",
+      "options": [
+        "append()",
+        "push()",
+        "add()",
+        "insert()"
+      ],
+      "answer": "1",
+      "points": 15
+    },
+    {
+      "type": "MCQ",
+      "text": "What does 'NaN' stand for in JavaScript?",
+      "options": [
+        "Not a Number",
+        "Null and Null",
+        "New Array Node",
+        "None of the above"
+      ],
+      "answer": "0",
+      "points": 10
+    }
+  ]
+}
+
+### 2. Get Quiz Details (Authenticated Users)
+GET {{baseUrl}}/quiz/quiz-id-here
+Authorization: Bearer {{authToken}}
+
+### 3. Start Quiz (Students Only)
+POST {{baseUrl}}/quiz/quiz-id-here/start
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "note": "Starting the quiz attempt"
+}
+
+### 4. Submit Answer (Students Only)
+POST {{baseUrl}}/quiz/attempt/attempt-id-here/answer
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "questionId": "question-id-here",
+  "answer": "var x = 5"
+}
+
+### 5. Submit Another Answer (Multiple Choice)
+POST {{baseUrl}}/quiz/attempt/attempt-id-here/answer
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "questionId": "question-id-here",
+  "answer": "False"
+}
+
+### 6. Submit Short Answer
+POST {{baseUrl}}/quiz/attempt/attempt-id-here/answer
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "questionId": "question-id-here",
+  "answer": "function"
+}
+
+### 7. Submit Quiz (Finalize Attempt)
+POST {{baseUrl}}/quiz/attempt/attempt-id-here/submit
+Authorization: Bearer {{authToken}}
+
+### 8. Get Quiz Statistics (Instructors Only)
+GET {{baseUrl}}/quiz/quiz-id-here/stats
+Authorization: Bearer {{authToken}}
+
+### 9. Get User Attempts (Students can view own, Instructors can view any)
+GET {{baseUrl}}/quiz/user/user-id-here/attempts?quizId=quiz-id-here
+Authorization: Bearer {{authToken}}
+
+### 10. Get Current User's Attempts
+GET {{baseUrl}}/quiz/user/current-user-id/attempts?quizId=quiz-id-here
+Authorization: Bearer {{authToken}}
+
+###############################################
+# Test Scenarios with Sample Data
+###############################################
+
+### Scenario 1: Complete Quiz Flow for Student
+
+# Step 1: Get quiz details
+GET {{baseUrl}}/quiz/cm3xyz123/start
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# Step 2: Start quiz
+POST {{baseUrl}}/quiz/cm3xyz123/start
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{}
+
+# Step 3: Submit answers sequentially
+POST {{baseUrl}}/quiz/attempt/cm3abc456/answer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "questionId": "cm3q1",
+  "answer": "var x = 5"
+}
+
+###
+
+POST {{baseUrl}}/quiz/attempt/cm3abc456/answer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "questionId": "cm3q2",
+  "answer": "False"
+}
+
+###
+
+POST {{baseUrl}}/quiz/attempt/cm3abc456/answer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "questionId": "cm3q3",
+  "answer": "function"
+}
+
+# Step 4: Submit quiz
+POST {{baseUrl}}/quiz/attempt/cm3abc456/submit
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+###############################################
+# Error Testing
+###############################################
+
+### Test: Submit answer without authentication
+POST {{baseUrl}}/quiz/attempt/cm3abc456/answer
+Content-Type: application/json
+
+{
+  "questionId": "cm3q1",
+  "answer": "var x = 5"
+}
+
+### Test: Access instructor-only endpoint as student
+GET {{baseUrl}}/quiz/cm3xyz123/stats
+Authorization: Bearer student-token-here
+
+### Test: Submit to non-existent quiz
+POST {{baseUrl}}/quiz/non-existent-id/start
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{}
+
+### Test: Submit answer to expired attempt
+POST {{baseUrl}}/quiz/attempt/expired-attempt-id/answer
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "questionId": "cm3q1",
+  "answer": "test"
+}
+
+###############################################
+# Instructor Testing
+###############################################
+
+### Create comprehensive quiz with all question types
+POST {{baseUrl}}/quiz
+Authorization: Bearer instructor-token-here
+Content-Type: application/json
+
+{
+  "title": "Advanced JavaScript Quiz",
+  "description": "Comprehensive test covering advanced JavaScript concepts",
+  "courseId": "course-advanced-js",
+  "timeLimit": 45,
+  "maxAttempts": 2,
+  "passingScore": 80,
+  "published": true,
+  "questions": [
+    {
+      "type": "MCQ",
+      "text": "Which of the following is NOT a primitive data type in JavaScript?",
+      "options": ["string", "number", "boolean", "object"],
+      "answer": "object",
+      "points": 5,
+      "order": 1
+    },
+    {
+      "type": "TRUE_FALSE",
+      "text": "JavaScript supports both call by value and call by reference",
+      "options": ["True", "False"],
+      "answer": "True",
+      "points": 5,
+      "order": 2
+    },
+    {
+      "type": "SHORT_ANSWER",
+      "text": "What method is used to add an element to the end of an array?",
+      "answer": "push",
+      "points": 10,
+      "order": 3
+    },
+    {
+      "type": "MCQ",
+      "text": "What will console.log(typeof null) output?",
+      "options": ["null", "undefined", "object", "boolean"],
+      "answer": "object",
+      "points": 10,
+      "order": 4
+    }
+  ]
+}
+
+### Get detailed quiz statistics
+GET {{baseUrl}}/quiz/cm3xyz123/stats
+Authorization: Bearer instructor-token-here
+
+### View all attempts for a specific user
+GET {{baseUrl}}/quiz/user/student-user-id/attempts?quizId=cm3xyz123
+Authorization: Bearer instructor-token-here

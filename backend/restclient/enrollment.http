@@ -1,0 +1,42 @@
+### 🔐 Set your token and test variables here
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNWUxNDZhNi05ZGE1LTQxZTQtYWEyMC04MTk2YjkxZmZlYzYiLCJlbWFpbCI6Imhha2ltQHN0dWRlbnQuY29tIiwicm9sZSI6IlNUVURFTlQiLCJpYXQiOjE3NTE3NDcwMTMsImV4cCI6MTc1MTgzMzQxM30.uvoelg22PMG0VMKGa_INafvhyVh60u5TxEu46oKVS0U
+@courseId=72c54f8d-0fff-44de-bd23-d8a2da2fd1e3
+
+# Optional: For deleting/unsubscribing tests
+@anotherCourseId=
+
+# Base URL (customize if needed)
+@baseUrl=http://localhost:3000
+
+---
+
+### 📥 Enroll in a Course
+POST {{baseUrl}}/enrollment/{{courseId}}/enroll
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+### 📤 Unenroll from a Course
+DELETE {{baseUrl}}/enrollment/{{anotherCourseId}}/unenroll
+Authorization: Bearer {{token}}
+
+###
+
+### 🧑‍🎓 Get Student Dashboard (Enrolled Courses + Progress)
+GET {{baseUrl}}/enrollment/me/dashboard
+Authorization: Bearer {{token}}
+
+###
+
+### ⚠️ Invalid Enrollment (Test Duplicate Enroll Attempt)
+POST {{baseUrl}}/enrollment/{{courseId}}/enroll
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+### 🔒 Try Enrollment Without Token (Should Fail)
+POST {{baseUrl}}/enrollment/{{courseId}}/enroll
+Content-Type: application/json
+

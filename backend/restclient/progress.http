@@ -1,0 +1,45 @@
+### 🔐 Environment Variables (REST Client)
+@token=your_jwt_token_here
+@lessonId=replace-with-lesson-id
+@courseId=replace-with-course-id
+@baseUrl=http://localhost:3000
+
+---
+
+### 📝 Mark Lesson as Completed
+POST {{baseUrl}}/progress/lesson/{{lessonId}}/complete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+### Expected: 200 OK with progress record JSON
+
+---
+
+### 📊 Get Course Progress
+GET {{baseUrl}}/progress/course/{{courseId}}
+Authorization: Bearer {{token}}
+
+### Expected: 200 OK with CourseProgressResponseDto
+
+---
+
+### 🚫 Try Without Token (Should 401 Unauthorized)
+POST {{baseUrl}}/progress/lesson/{{lessonId}}/complete
+Content-Type: application/json
+
+---
+
+### 🚫 Invalid Lesson ID (Should 404 Not Found)
+POST {{baseUrl}}/progress/lesson/invalid-lesson-id/complete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+---
+
+### 📄 Notes:
+# • Replace `{{token}}`, `{{lessonId}}`, and `{{courseId}}` with real values.
+# • Use a `.env` file alongside for VS Code REST Client automatic variable substitution:
+#   token=eyJhbGc...
+#   lessonId=abc123-lesson-id
+#   courseId=def456-course-id
+#   baseUrl=http://localhost:3000

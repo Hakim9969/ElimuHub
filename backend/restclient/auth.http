@@ -3,9 +3,9 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-  "name": "Test Student",
-  "email": "student@example.com",
-  "password": "Password123",
+  "name": "hakim",
+  "email": "hakim@student.com",
+  "password": "123456789",
   "phone": "+254712345678",
   "role": "STUDENT"
 }
@@ -17,10 +17,10 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-  "name": "Test Instructor",
-  "email": "instructor@example.com",
-  "password": "Password123",
-  "phone": "+254712345679",
+  "name": "Waiganjo",
+  "email": "jimjam@waiganjo.com",
+  "password": "123456789",
+  "phone": "+254712345678",
   "role": "INSTRUCTOR"
 }
 
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 {
   "email": "student@example.com",
-  "password": "Password123",
+  "password": "Password123"
 }
 
 ### Login instructor
