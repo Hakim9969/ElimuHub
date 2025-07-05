@@ -17,6 +17,7 @@ export interface User {
 }
 
 export interface UserResponse {
+   sub?: string;
   id: string;
   email: string;
   name: string;
