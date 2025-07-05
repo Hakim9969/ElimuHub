@@ -4,12 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { StartQuizDto } from './interfaces/start-quiz.dto';
-import { SubmitAnswerDto } from './interfaces/submit-answer.dto';
+import { StartQuizDto } from './dtos/start-quiz.dto';
+import { SubmitAnswerDto } from './dtos/submit-answer.dto';
 import { AttemptStatus } from './interfaces/quiz.interface';
 import { $Enums } from '../../generated/prisma';
-import { CreateQuizDto } from './interfaces/create-quiz.dto';
 import QuestionType = $Enums.QuestionType;
+import { CreateQuizDto } from './dtos/create-quiz.dto';
 
 @Injectable()
 export class QuizzesService {

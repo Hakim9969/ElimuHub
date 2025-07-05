@@ -1,4 +1,4 @@
-@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5N2Y2MjU5OS0yZTQ5LTRhYjktYjBiOS01YWRmZjFhMTc2ZWYiLCJlbWFpbCI6ImppbWphbUBpbnN0cnVjdG9yLmNvbSIsInJvbGUiOiJJTlNUUlVDVE9SIiwiaWF0IjoxNzUxNzE0NTc5LCJleHAiOjE3NTE4MDA5Nzl9.cMDx8TbxTJnH3UBDNzmTNXjCk9Uwbd4iseF9zL0vPT0
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZTMzNTRlZS04ZWJjLTQ1MGYtYjBhNC04MGM0ZDM3YTljOWIiLCJlbWFpbCI6ImppbWphbUB3YWlnYW5qby5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTc0NjExMCwiZXhwIjoxNzUxODMyNTEwfQ.YKhPdNY20fiHsBxneL4gweXbw1YpiL3e7FhN4BaRUP8
 
 ###
 
@@ -8,12 +8,12 @@ Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "Testing",
+  "title": "Tailwindcss intro",
   "description": "A complete intro course",
-  "category": "Web Testing",
+  "category": "Tailwind",
   "difficulty": "BEGINNER",
-  "objectives": "learn Cypress",
-  "prerequisites": "Basic Cypress knowledge",
+  "objectives": "learn Tailwind css",
+  "prerequisites": "CSS",
   "image": "https://example.com/images/angular.png"
 }
 
