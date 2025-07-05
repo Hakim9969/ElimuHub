@@ -45,7 +45,7 @@ export class CoursesService {
       },
     });
 
-    return courses.map(course => this.transformCourse(course));
+    return courses.map((course) => this.transformCourse(course));
   }
 
   async findByInstructor(instructorId: string) {
@@ -62,7 +62,7 @@ export class CoursesService {
       },
     });
 
-    return courses.map(course => this.transformCourse(course));
+    return courses.map((course) => this.transformCourse(course));
   }
 
   async findOne(id: string) {
@@ -120,7 +120,7 @@ export class CoursesService {
     return {
       ...rest,
       instructor,
-      content: modules, // ✅ Rename modules to content
+      content: modules,
       enrollments,
       quizzes,
       announcements,
