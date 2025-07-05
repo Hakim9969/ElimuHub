@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ProgressController } from './progress.controller';
 import { ProgressService } from './progress.service';
+import { ProgressController } from './progress.controller';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
+  providers: [ProgressService, PrismaService],
   controllers: [ProgressController],
-  providers: [ProgressService]
 })
 export class ProgressModule {}

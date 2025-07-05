@@ -9,8 +9,9 @@ export class EnrollmentResponseDto {
     difficulty: string;
     published: boolean;
   };
-  progress: {
-    lessonId: string;
-    completed: boolean;
-  }[];
+  totalLessons: number;
+  progress: number;
+  progressPercentage: number;
+  certificateIssued: boolean;
+  certificateIssuedAt?: Date;
 }
