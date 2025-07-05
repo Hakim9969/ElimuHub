@@ -16,9 +16,10 @@ import { MessagesModule } from './messages/messages.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { UserService } from './users/users.service';
 import { UsersController } from './users/users.controller';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, CoursesModule, ContentModule, EnrollmentModule, ProgressModule, QuizzesModule, ReviewsModule, CertificatesModule, AnnouncementsModule, MessagesModule, AnalyticsModule],
+  imports: [PrismaModule, AuthModule, UsersModule, CoursesModule, ContentModule, EnrollmentModule, ProgressModule, QuizzesModule, ReviewsModule, CertificatesModule, AnnouncementsModule, MessagesModule, AnalyticsModule, LessonModule],
   controllers: [AppController, UsersController],
   providers: [AppService, UserService],
 })
