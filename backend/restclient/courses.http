@@ -1,4 +1,4 @@
-@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTY5OTgyNywiZXhwIjoxNzUxNzg2MjI3fQ.iOTPlgOMEx_-27WI_LNzAq7ilbbU_5PrgV7PzFEQ8cU
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5N2Y2MjU5OS0yZTQ5LTRhYjktYjBiOS01YWRmZjFhMTc2ZWYiLCJlbWFpbCI6ImppbWphbUBpbnN0cnVjdG9yLmNvbSIsInJvbGUiOiJJTlNUUlVDVE9SIiwiaWF0IjoxNzUxNzE0NTc5LCJleHAiOjE3NTE4MDA5Nzl9.cMDx8TbxTJnH3UBDNzmTNXjCk9Uwbd4iseF9zL0vPT0
 
 ###
 
@@ -8,12 +8,12 @@ Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "NestJ for Beginners",
+  "title": "Testing",
   "description": "A complete intro course",
-  "category": "Programming",
+  "category": "Web Testing",
   "difficulty": "BEGINNER",
-  "objectives": "Build APIs",
-  "prerequisites": "Basic JavaScript knowledge",
+  "objectives": "learn Cypress",
+  "prerequisites": "Basic Cypress knowledge",
   "image": "https://example.com/images/angular.png"
 }
 

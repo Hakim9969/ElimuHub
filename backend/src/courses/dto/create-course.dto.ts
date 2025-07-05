@@ -20,5 +20,13 @@ export class CreateCourseDto {
 
   @IsOptional()
   @IsString()
-  prerequisiteCourseId: string; 
+  prerequisiteCourseId?: string; // FK to another course
+
+  @IsOptional()
+  @IsString()
+  prerequisites?: string; // Text-based prerequisite (e.g., "Basic HTML")
+
+  @IsOptional()
+  @IsString()
+  image?: string; // Course thumbnail URL or path
 }

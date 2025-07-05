@@ -46,8 +46,6 @@ model Course {
   category      String
   difficulty    Difficulty
   objectives    String?
-  prerequisites String?
-  published     Boolean         @default(false)
   image         String? //added image
   prerequisites String?           // Optional: Keep this for textual description
   published     Boolean          @default(false)

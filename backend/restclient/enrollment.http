@@ -1,9 +1,9 @@
 ### 🔐 Set your token and test variables here
-@token=your_jwt_token_here
-@courseId=replace-with-course-id
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNGNiM2YzOS1hMTVjLTQzNWUtYTI1My1hNDVhYmMxMTY5MWUiLCJlbWFpbCI6ImppbWphbUBleGFtcGxlLmNvbSIsInJvbGUiOiJTVFVERU5UIiwiaWF0IjoxNzUxNzE0MzgwLCJleHAiOjE3NTE4MDA3ODB9.igDJybUfC_knI9Ma-Uyr5EXmd_dMCn8f07b3rsX_dXQ
+@courseId=72c54f8d-0fff-44de-bd23-d8a2da2fd1e3
 
 # Optional: For deleting/unsubscribing tests
-@anotherCourseId=replace-with-course-id
+@anotherCourseId=
 
 # Base URL (customize if needed)
 @baseUrl=http://localhost:3000
@@ -40,9 +40,3 @@ Content-Type: application/json
 POST {{baseUrl}}/enrollment/{{courseId}}/enroll
 Content-Type: application/json
 
-###
-
-### 📄 Notes:
-# 1. Replace `{{token}}` with a real JWT (student account)
-# 2. Replace `{{courseId}}` and `{{anotherCourseId}}` with real course UUIDs
-# 3. Run each section individually in REST Client (VS Code or other)
