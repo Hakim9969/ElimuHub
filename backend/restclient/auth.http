@@ -1,0 +1,69 @@
+### Register User (Student by default)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test Student",
+  "email": "student@example.com",
+  "password": "Password123",
+  "phone": "+254712345678",
+  "role": "STUDENT"
+}
+
+###
+
+### Register User (Instructor)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test Instructor",
+  "email": "instructor@example.com",
+  "password": "Password123",
+  "phone": "+254712345679",
+  "role": "INSTRUCTOR"
+}
+
+###
+
+### Register User (Admin)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Abdul Hakim",
+  "email": "hakimyakim200@gmail.com",
+  "password": "hakim200",
+  "phone": "+254745115061",
+  "role": "ADMIN"
+}
+
+###
+
+### Login student
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "student@example.com",
+  "password": "Password123",
+}
+
+### Login instructor
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "instructor@example.com",
+  "password": "Password123"
+}
+
+
+
+### Login admin
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+{
+  "email": "hakimyakim200@gmail.com",
+  "password": "hakim200",
+}

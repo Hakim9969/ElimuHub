@@ -1,0 +1,49 @@
+import * as bcrypt from 'bcrypt';
+
+const prisma = new PrismaClient();
+
+async function main() {
+  const password = await bcrypt.hash('Password123', 10);
+
+  const users = [
+    {
+      name: 'Admin',
+      email: 'admin@example.com',
+      password,
+      role: Role.ADMIN,
+    },
+    {
+      name: 'Instructor User',
+      email: 'instructor@example.com',
+      password,
+      role: Role.INSTRUCTOR,
+    },
+    {
+      name: 'Student User',
+      email: 'student@example.com',
+      password,
+      role: Role.STUDENT,
+    },
+  ];
+
+  for (const data of users) {
+    const existing = await prisma.user.findUnique({ where: { email: data.email } });
+    if (!existing) {
+      await prisma.user.create({ data });
+      console.log(`✅ Created: ${data.role} (${data.email})`);
+    } else {
+      console.log(`⚠️ Skipped existing: ${data.email}`);
+    }
+  }
+}
+
+main()
+  .then(() => {
+    console.log('🌱 Seeding complete.');
+    prisma.$disconnect();
+  })
+  .catch((e) => {
+    console.error(e);
+    prisma.$disconnect();
+    process.exit(1);
+  });

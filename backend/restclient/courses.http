@@ -1,0 +1,53 @@
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTY5OTgyNywiZXhwIjoxNzUxNzg2MjI3fQ.iOTPlgOMEx_-27WI_LNzAq7ilbbU_5PrgV7PzFEQ8cU
+
+###
+
+### ✅ Create Course (Instructor Only)
+POST http://localhost:3000/courses
+Authorization: Bearer {{instructor_token}}
+Content-Type: application/json
+
+{
+  "title": "NestJ for Beginners",
+  "description": "A complete intro course",
+  "category": "Programming",
+  "difficulty": "BEGINNER",
+  "objectives": "Build APIs",
+  "prerequisites": "Basic JavaScript knowledge",
+  "image": "https://example.com/images/angular.png"
+}
+
+###
+
+### 📥 Get All Published Courses (Public)
+GET http://localhost:3000/courses
+
+###
+
+### 🧑‍🏫 Get My Courses (Instructor Only)
+GET http://localhost:3000/courses/my
+Authorization: Bearer {{instructor_token}}
+
+###
+
+### 📄 Get One Course by ID
+GET http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
+Authorization: Bearer {{instructor_token}}
+
+###
+
+### ✏️ Update Course
+PATCH http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
+Authorization: Bearer {{instructor_token}}
+Content-Type: application/json
+
+{
+  "title": "NestJS for Beginners - Updated",
+  "published": true
+}
+
+###
+
+### ❌ Delete Course
+DELETE http://localhost:3000/courses/ab1f49df-8094-476b-9692-876ac0dce926
+Authorization: Bearer {{instructor_token}}
