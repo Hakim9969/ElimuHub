@@ -4,13 +4,12 @@ import { CategoryResponseDto, CourseResponseDto, Difficulty } from '../../../mod
 import { CourseService } from '../../services/course-service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-landing',
   standalone:true,
   imports:[CommonModule,
-    RouterModule, HttpClientModule  ],
+    RouterModule],
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
