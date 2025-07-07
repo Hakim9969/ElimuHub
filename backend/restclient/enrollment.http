@@ -18,7 +18,7 @@ Content-Type: application/json
 ###
 
 ### 📤 Unenroll from a Course
-DELETE {{baseUrl}}/enrollment/{{anotherCourseId}}/unenroll
+DELETE {{baseUrl}}/enrollment/{{courseId}}/unenroll
 Authorization: Bearer {{token}}
 
 ###

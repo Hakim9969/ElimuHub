@@ -46,7 +46,7 @@ Content-Type: application/json
 
 {
   "email": "student@example.com",
-  "password": "Password123",
+  "password": "Password123"
 }
 
 ### Login instructor
@@ -63,7 +63,8 @@ Content-Type: application/json
 ### Login admin
 POST http://localhost:3000/auth/login
 Content-Type: application/json
+
 {
   "email": "hakimyakim200@gmail.com",
-  "password": "hakim200",
+  "password": "hakim200"
 }
