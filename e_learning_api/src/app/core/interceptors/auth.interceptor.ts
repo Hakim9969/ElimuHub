@@ -1,33 +1,35 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { TokenService } from '../auth/token.service';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+import {AuthService} from '../../services/auth.service';
 
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  constructor(private tokenService: TokenService) {}
+  // Get the auth token from the service
+  const authToken = authService.getToken();
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const token = this.tokenService.getToken();
-
-    if (token) {
-      const cloned = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return next.handle(cloned);
-    }
-
-    return next.handle(req);
+  // Clone the request and add the authorization header if token exists
+  if (authToken) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${authToken}`
+      }
+    });
   }
-}
+
+  // Handle the request and catch any errors
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      // If we get a 401 Unauthorized error, logout the user
+      if (error.status === 401) {
+        authService.logout();
+        router.navigate(['/auth']);
+      }
+
+      return throwError(() => error);
+    })
+  );
+};
