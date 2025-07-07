@@ -16,10 +16,16 @@ export class EnrollmentService {
   ) {}
 
   async enrollUserInCourse(userId: string, courseId: string) {
-    const existing = await this.prisma.enrollment.findFirst({ where: { userId, courseId } });
-    if (existing) throw new ConflictException('User is already enrolled in this course.');
+    const existing = await this.prisma.enrollment.findFirst({
+      where: { userId, courseId },
+    });
+    if (existing)
+      throw new ConflictException('User is already enrolled in this course.');
 
-    const course = await this.prisma.course.findUnique({ where: { id: courseId }, include: { prerequisite: true } });
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+      include: { prerequisite: true },
+    });
     if (!course) throw new NotFoundException('Course not found');
 
     if (course?.prerequisiteCourseId) {
@@ -30,33 +36,48 @@ export class EnrollmentService {
           progress: { some: { completed: true } },
         },
       });
-      if (!prereq) throw new ForbiddenException('You must complete the prerequisite course first.');
+      if (!prereq)
+        throw new ForbiddenException(
+          'You must complete the prerequisite course first.',
+        );
     }
 
     return this.prisma.enrollment.create({ data: { userId, courseId } });
   }
 
-  async getDashboard(userId: string): Promise<EnrollmentWithCourseAndProgress[]> {
+  async getDashboard(
+    userId: string,
+  ): Promise<EnrollmentWithCourseAndProgress[]> {
     const enrollments = await this.prisma.enrollment.findMany({
       where: { userId },
       include: {
         course: {
-          select: { id: true, title: true, description: true, category: true, difficulty: true, published: true },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            category: true,
+            difficulty: true,
+            published: true,
+          },
         },
       },
     });
 
     const detailed = await Promise.all(
       enrollments.map(async (enr) => {
-        const progressDto = await this.progressService.getCourseProgress(userId, enr.courseId);
+        const progressDto = await this.progressService.getCourseProgress(
+          userId,
+          enr.courseId,
+        );
         return {
           id: enr.id,
           userId: enr.userId,
           courseId: enr.courseId,
           enrolledAt: enr.enrolledAt,
           course: enr.course,
-          progress: progressDto.completedLessons,          // number of completed lessons
-          totalLessons: progressDto.totalLessons,          // total lessons count
+          progress: progressDto.completedLessons,
+          totalLessons: progressDto.totalLessons,
           progressPercentage: progressDto.progressPercentage,
           certificateIssued: progressDto.certificateIssued,
           certificateIssuedAt: progressDto.issuedAt,

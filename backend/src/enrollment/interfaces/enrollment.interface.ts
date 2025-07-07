@@ -16,7 +16,7 @@ export interface EnrollmentWithCourseAndProgress extends Enrollment {
   };
   // existing raw progress entries removed, replaced by counts and percentage
   totalLessons: number;
-  progress: number;           // completed lessons count
+  progress: number;
   progressPercentage: number; // 0–100
   certificateIssued: boolean;
   certificateIssuedAt?: Date;

@@ -1,38 +1,81 @@
-<div class="bg-white rounded-xl shadow-sm border p-6" *ngIf="lesson">
-  <div class="mb-6">
-    <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ lesson.title }}</h2>
-    <div class="flex items-center space-x-2 text-sm text-gray-500">
-      <span>Module {{ selectedModuleId }}</span>
-      <span>•</span>
-      <span>Lesson {{ lesson.id }}</span>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+  <div *ngIf="currentLesson; else noLesson">
+    <!-- Lesson Header -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ currentLesson.title }}</h1>
+      <div class="flex items-center space-x-4 text-sm text-gray-600">
+            <span class="flex items-center space-x-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>{{ currentLesson.duration }}</span>
+            </span>
+      </div>
+    </div>
+
+    <!-- Video Player (if available) -->
+    <div *ngIf="currentLesson.videoUrl" class="mb-6">
+      <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+        <video
+          class="w-full h-full object-cover"
+          controls
+          [src]="currentLesson.videoUrl"
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <!-- Lesson Content -->
+    <div class="prose max-w-none mb-8">
+      <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ currentLesson.content }}</div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div *ngIf="currentLesson.quiz && !showQuiz" class="border-t pt-6">
+      <div class="text-center">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Ready for the Quiz?</h3>
+        <p class="text-gray-600 mb-4">Test your understanding of this lesson</p>
+        <button
+          (click)="startQuiz()"
+          class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium"
+        >
+          Start Quiz
+        </button>
+      </div>
+    </div>
+
+    <!-- Quiz Component -->
+    <div *ngIf="showQuiz && currentLesson.quiz" class="border-t pt-6">
+      <app-quiz
+        [quiz]="currentLesson.quiz"
+        (quizCompleted)="onQuizCompleted($event)"
+      ></app-quiz>
+    </div>
+
+    <!-- Lesson Completed -->
+    <div *ngIf="isLessonCompleted" class="border-t pt-6">
+      <div class="text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+          <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Lesson Completed!</h3>
+        <p class="text-gray-600">Great job! You've successfully completed this lesson.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Lesson Content -->
-  <div class="prose max-w-none mb-8">
-    <p class="text-gray-700 leading-relaxed">{{ lesson.content }}</p>
-  </div>
-
-  <!-- Quiz Section -->
-  <app-quiz
-    *ngIf="lesson.quiz"
-    [quiz]="lesson.quiz"
-    [isSubmitted]="quizSubmitted"
-    (quizCompleted)="onQuizCompleted()"
-  ></app-quiz>
-
-  <!-- Next Module Button -->
-  <app-next-module-button
-    *ngIf="showNextModule"
-    (nextModuleClicked)="onNextModuleClicked()"
-  ></app-next-module-button>
-</div>
-
-<!-- Empty State -->
-<div class="bg-white rounded-xl shadow-sm border p-8 text-center" *ngIf="!lesson">
-  <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-  </svg>
-  <h3 class="text-xl font-semibold text-gray-900 mb-2">Select a Lesson to Begin</h3>
-  <p class="text-gray-600">Choose a module from the sidebar and select a lesson to start learning.</p>
+  <ng-template #noLesson>
+    <div class="text-center py-12">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Select a Lesson</h3>
+      <p class="text-gray-600">Choose a lesson from the module list to get started</p>
+    </div>
+  </ng-template>
 </div>

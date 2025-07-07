@@ -1,50 +1,86 @@
-<div class="space-y-2">
-  <div
-    *ngFor="let module of modules"
-    class="border rounded-lg"
-  >
-    <button
-      (click)="onModuleClick(module.id)"
-      class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+  <h2 class="text-xl font-semibold text-gray-800 mb-4">Course Modules</h2>
+
+  <div class="space-y-3" *ngIf="course">
+    <div
+      *ngFor="let module of course.modules; let i = index"
+      class="border rounded-lg overflow-hidden transition-all duration-200 hover:shadow-md"
+      [class.border-blue-500]="currentModule?.id === module.id"
+      [class.bg-blue-50]="currentModule?.id === module.id"
     >
-      <div class="flex items-center space-x-3">
-        <div class="text-blue-600">
+      <div
+        class="p-4 cursor-pointer flex items-center justify-between"
+        (click)="toggleModule(module)"
+      >
+        <div class="flex items-center space-x-3">
+          <div class="flex-shrink-0">
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium"
+              [class.bg-blue-500]="currentModule?.id === module.id"
+              [class.text-white]="currentModule?.id === module.id"
+              [class.bg-gray-100]="currentModule?.id !== module.id"
+              [class.text-gray-600]="currentModule?.id !== module.id"
+            >
+              {{ i + 1 }}
+            </div>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-800">{{ module.title }}</h3>
+            <p class="text-sm text-gray-600">{{ module.lessons.length }} lessons</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
           <svg
-            *ngIf="selectedModuleId === module.id"
-            class="w-4 h-4"
+            class="w-5 h-5 text-gray-400 transform transition-transform duration-200"
+            [class.rotate-180]="expandedModules.has(module.id)"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
-          <svg
-            *ngIf="selectedModuleId !== module.id"
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
         </div>
-        <span class="font-medium text-gray-900">{{ module.title }}</span>
       </div>
-      <span class="text-sm text-gray-500">
-            {{ getCompletedCount(module.id) }}/{{ module.lessons.length }}
-          </span>
-    </button>
 
-    <div
-      *ngIf="selectedModuleId === module.id"
-      class="border-t bg-gray-50"
-    >
-      <app-lesson-list
-        [lessons]="module.lessons"
-        [selectedLessonId]="selectedLessonId"
-        [completedLessons]="completedLessons"
-        (lessonSelected)="onLessonSelected($event)"
-      ></app-lesson-list>
+      <div
+        *ngIf="expandedModules.has(module.id)"
+        class="border-t bg-gray-50 p-4 space-y-2"
+      >
+        <div
+          *ngFor="let lesson of module.lessons"
+          class="flex items-center justify-between p-3 bg-white rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
+          (click)="selectLesson(lesson)"
+          [class.border-blue-300]="currentLesson?.id === lesson.id"
+          [class.bg-blue-50]="currentLesson?.id === lesson.id"
+        >
+          <div class="flex items-center space-x-3">
+            <div class="flex-shrink-0">
+              <svg
+                *ngIf="isLessonCompleted(lesson.id)"
+                class="w-5 h-5 text-green-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <svg
+                *ngIf="!isLessonCompleted(lesson.id)"
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9 4h10a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-800">{{ lesson.title }}</h4>
+              <p class="text-sm text-gray-600">{{ lesson.duration }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

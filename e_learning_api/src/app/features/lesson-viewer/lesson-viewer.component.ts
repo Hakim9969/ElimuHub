@@ -1,27 +1,39 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Lesson} from '../module-list/module-list.component';
-import { NextModuleButtonComponent } from './next-module-button.component';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from "@angular/common";
+import {LearningService} from "../../services/learning.service";
+import {LessonDto} from "../../../models/course.model";
+import {QuizComponent} from "../quiz/quiz.component";
 
 @Component({
   selector: 'app-lesson-viewer',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, QuizComponent],
   templateUrl: './lesson-viewer.component.html',
   styleUrl: './lesson-viewer.component.css'
 })
-export class LessonViewerComponent {
-  @Input() lesson: Lesson | null = null;
-  @Input() selectedModuleId: number | null = null;
-  @Input() quizSubmitted: boolean = false;
-  @Input() showNextModule: boolean = false;
+export class LessonViewerComponent implements OnInit {
+  currentLesson: LessonDto | null = null;
+  showQuiz = false;
+  isLessonCompleted = false;
 
-  @Output() quizCompleted = new EventEmitter<void>();
-  @Output() nextModuleClicked = new EventEmitter<void>();
+  constructor(private learningService: LearningService) {}
 
-  onQuizCompleted(): void {
-    this.quizCompleted.emit();
+  ngOnInit() {
+    this.learningService.currentLesson$.subscribe(lesson => {
+      this.currentLesson = lesson;
+      this.showQuiz = false;
+      this.isLessonCompleted = lesson ? this.learningService.isLessonCompleted(lesson.id) : false;
+    });
   }
 
-  onNextModuleClicked(): void {
-    this.nextModuleClicked.emit();
+  startQuiz() {
+    this.showQuiz = true;
+  }
+
+  onQuizCompleted(passed: boolean) {
+    if (passed && this.currentLesson) {
+      this.learningService.markLessonCompleted(this.currentLesson.id);
+      this.isLessonCompleted = true;
+    }
   }
 }
