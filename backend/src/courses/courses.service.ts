@@ -32,23 +32,21 @@ export class CoursesService {
   }
 
   async findAllCategories(): Promise<{ name: string }[]> {
-  const categories = await this.prisma.course.findMany({
-    where: {
-      published: true,
-    },
-    select: {
-      category: true,
-    },
-    distinct: ['category'],
-  });
+    const categories = await this.prisma.course.findMany({
+      where: {
+        published: true,
+      },
+      select: {
+        category: true,
+      },
+      distinct: ['category'],
+    });
 
-  return categories
-    .map(c => c.category)
-    .filter(Boolean)
-    .map(name => ({ name }));
-}
-
-
+    return categories
+      .map((c) => c.category)
+      .filter(Boolean)
+      .map((name) => ({ name }));
+  }
 
   async findAll() {
     const courses = await this.prisma.course.findMany({
@@ -64,7 +62,7 @@ export class CoursesService {
       },
     });
 
-    return courses.map(course => this.transformCourse(course));
+    return courses.map((course) => this.transformCourse(course));
   }
 
   async findByInstructor(instructorId: string) {
@@ -81,7 +79,7 @@ export class CoursesService {
       },
     });
 
-    return courses.map(course => this.transformCourse(course));
+    return courses.map((course) => this.transformCourse(course));
   }
 
   async findOne(id: string) {
@@ -104,25 +102,24 @@ export class CoursesService {
   }
 
   async findByCategory(category: string) {
-  const courses = await this.prisma.course.findMany({
-    where: {
-      category,
-      published: true,
-    },
-    include: {
-      instructor: true,
-      modules: true,
-      enrollments: true,
-      quizzes: true,
-      announcements: true,
-      reviews: true,
-      certificates: true,
-    },
-  });
-  
+    const courses = await this.prisma.course.findMany({
+      where: {
+        category,
+        published: true,
+      },
+      include: {
+        instructor: true,
+        modules: true,
+        enrollments: true,
+        quizzes: true,
+        announcements: true,
+        reviews: true,
+        certificates: true,
+      },
+    });
 
-  return courses.map(course => this.transformCourse(course));
- }
+    return courses.map((course) => this.transformCourse(course));
+  }
 
   async update(id: string, userId: string, dto: UpdateCourseDto) {
     const course = await this.prisma.course.findUnique({ where: { id } });

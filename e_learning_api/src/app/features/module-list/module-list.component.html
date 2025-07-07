@@ -1,0 +1,50 @@
+<div class="space-y-2">
+  <div
+    *ngFor="let module of modules"
+    class="border rounded-lg"
+  >
+    <button
+      (click)="onModuleClick(module.id)"
+      class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+    >
+      <div class="flex items-center space-x-3">
+        <div class="text-blue-600">
+          <svg
+            *ngIf="selectedModuleId === module.id"
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+          <svg
+            *ngIf="selectedModuleId !== module.id"
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+        <span class="font-medium text-gray-900">{{ module.title }}</span>
+      </div>
+      <span class="text-sm text-gray-500">
+            {{ getCompletedCount(module.id) }}/{{ module.lessons.length }}
+          </span>
+    </button>
+
+    <div
+      *ngIf="selectedModuleId === module.id"
+      class="border-t bg-gray-50"
+    >
+      <app-lesson-list
+        [lessons]="module.lessons"
+        [selectedLessonId]="selectedLessonId"
+        [completedLessons]="completedLessons"
+        (lessonSelected)="onLessonSelected($event)"
+      ></app-lesson-list>
+    </div>
+  </div>
+</div>

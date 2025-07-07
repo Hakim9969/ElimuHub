@@ -1,0 +1,29 @@
+<div>
+  <button
+    *ngFor="let lesson of lessons"
+    (click)="onLessonClick(lesson)"
+    class="w-full flex items-center justify-between p-3 text-left hover:bg-gray-100 transition-colors"
+    [class.bg-blue-50]="selectedLessonId === lesson.id"
+    [class.border-l-4]="selectedLessonId === lesson.id"
+    [class.border-blue-500]="selectedLessonId === lesson.id"
+  >
+    <div class="flex items-center space-x-3">
+      <div class="text-gray-400">
+        <svg
+          *ngIf="completedLessons.has(lesson.id)"
+          class="w-4 h-4 text-green-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div
+          *ngIf="!completedLessons.has(lesson.id)"
+          class="w-4 h-4 rounded-full border-2 border-gray-300"
+        ></div>
+      </div>
+      <span class="text-sm text-gray-700">{{ lesson.title }}</span>
+    </div>
+  </button>
+</div>
