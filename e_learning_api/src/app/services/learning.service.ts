@@ -19,8 +19,8 @@ export class LearningService {
   setCourse(course: CourseResponseDto): void {
     this.currentCourseSubject.next(course);
     // Set first module as current
-    if (course.modules.length > 0) {
-      this.setCurrentModule(course.modules[0]);
+    if (course.contents.length > 0) {
+      this.setCurrentModule(course.contents[0]);
     }
   }
 
@@ -52,7 +52,7 @@ export class LearningService {
 
     if (!course || !currentModule) return null;
 
-    const currentIndex = course.modules.findIndex(m => m.id === currentModule.id);
-    return currentIndex < course.modules.length - 1 ? course.modules[currentIndex + 1] : null;
+    const currentIndex = course.contents.findIndex(m => m.id === currentModule.id);
+    return currentIndex < course.contents.length - 1 ? course.contents[currentIndex + 1] : null;
   }
 }

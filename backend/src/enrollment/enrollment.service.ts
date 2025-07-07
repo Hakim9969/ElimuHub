@@ -130,7 +130,7 @@ export class EnrollmentService {
             difficulty: enr.course.difficulty,
             published: enr.course.published,
             image: enr.course.image,
-            instructor: enr.course.instructor, // Include instructor
+            instructor: enr.course.instructor,
           },
           progress: progressDto.completedLessons,
           totalLessons: progressDto.totalLessons,

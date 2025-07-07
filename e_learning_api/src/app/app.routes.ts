@@ -10,7 +10,7 @@ export const routes: Routes = [
   {path: '', component: LandingComponent},
    { path: 'admin', component: AdminDashboardComponent },
   { path: 'courses', component: CoursesComponent },
-  {path: 'learn/:courseId', component: LearningPlatformComponent},
+  {path: 'enroll/learn/:courseId', component: LearningPlatformComponent},
   { path: 'enroll/my-courses', component: MyCoursesComponent },
 
 

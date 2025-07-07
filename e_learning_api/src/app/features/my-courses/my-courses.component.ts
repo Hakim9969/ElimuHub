@@ -103,7 +103,7 @@ export class MyCoursesComponent implements OnInit, OnDestroy {
   }
 
   startLearning(courseId: string) {
-    this.router.navigate(['/course', courseId, 'learn']);
+    this.router.navigate(['/enroll/learn', courseId]);
   }
 
   unenroll(courseId: string) {

@@ -13,7 +13,7 @@
     createdAt: Date;
     updatedAt: Date;
     instructor: User;
-    modules: ModuleDto[];
+    content: ModuleDto[];
     enrollments: any[];
     quizzes: any[];
     announcements: any[];
