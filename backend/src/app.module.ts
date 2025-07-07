@@ -16,9 +16,29 @@ import { MessagesModule } from './messages/messages.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { UserService } from './users/users.service';
 import { UsersController } from './users/users.controller';
+import { AppMailerModule } from './mailer/mailer.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, CoursesModule, ContentModule, EnrollmentModule, ProgressModule, QuizzesModule, ReviewsModule, CertificatesModule, AnnouncementsModule, MessagesModule, AnalyticsModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    PrismaModule,
+    AuthModule,
+    UsersModule,
+    CoursesModule,
+    ContentModule,
+    EnrollmentModule,
+    ProgressModule,
+    QuizzesModule,
+    ReviewsModule,
+    CertificatesModule,
+    AnnouncementsModule,
+    MessagesModule,
+    AnalyticsModule,
+    AppMailerModule,
+  ],
   controllers: [AppController, UsersController],
   providers: [AppService, UserService],
 })

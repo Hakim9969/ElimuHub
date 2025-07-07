@@ -1,4 +1,4 @@
-import { UserResponse } from "./user.model";
+import {User} from './user.model';
 
 export enum Difficulty {
   BEGINNER = 'Beginner',
@@ -18,7 +18,7 @@ export interface CourseResponseDto {
   image?: string;
   createdAt: Date;
   updatedAt: Date;
-  instructor: UserResponse;
+  instructor: User;
   modules: any[];
   enrollments: any[];
   quizzes: any[];
