@@ -58,7 +58,7 @@ export class CourseService {
    * Fetch all categories
    */
   getCategories(): Observable<CategoryResponseDto[]> {
-    return this.http.get<CategoryResponseDto[]>(`${this.apiUrl}/categories`);
+    return this.http.get<CategoryResponseDto[]>(`${this.apiUrl}/courses/categories`);
   }
 
   /**

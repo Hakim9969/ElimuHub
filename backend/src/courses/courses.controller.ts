@@ -41,10 +41,25 @@ export class CoursesController {
     return this.coursesService.findByInstructor(req.user.sub);
   }
 
+  @Get('/categories')
+  getAllCategories() {
+  return this.coursesService.findAllCategories();
+  }
+
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.coursesService.findOne(id);
   }
+
+  @Get('category/:category')
+  findByCategory(@Param('category') category: string) {
+   return this.coursesService.findByCategory(category);
+  }
+
+  
+
+
 
   @Patch(':id')
   @Roles('INSTRUCTOR')

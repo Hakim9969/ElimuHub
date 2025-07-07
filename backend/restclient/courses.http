@@ -1,5 +1,4 @@
-@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTY5OTgyNywiZXhwIjoxNzUxNzg2MjI3fQ.iOTPlgOMEx_-27WI_LNzAq7ilbbU_5PrgV7PzFEQ8cU
-
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTgwMDA4NiwiZXhwIjoxNzUxODg2NDg2fQ.QX4X-mp12QxnmXuSK4GAxVIwTwRWkeCHlUJiLypoOMs
 ###
 
 ### ✅ Create Course (Instructor Only)
@@ -8,12 +7,12 @@ Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "NestJ for Beginners",
+  "title": "Biz",
   "description": "A complete intro course",
-  "category": "Programming",
+  "category": "Business",
   "difficulty": "BEGINNER",
-  "objectives": "Build APIs",
-  "prerequisites": "Basic JavaScript knowledge",
+  "objectives": "Biz",
+  "prerequisites": "Money",
   "image": "https://example.com/images/angular.png"
 }
 
@@ -51,3 +50,13 @@ Content-Type: application/json
 ### ❌ Delete Course
 DELETE http://localhost:3000/courses/ab1f49df-8094-476b-9692-876ac0dce926
 Authorization: Bearer {{instructor_token}}
+
+### Get course by category
+GET http://localhost:3000/courses/category/Programming
+
+
+###fetch all unique course categories
+GET http://localhost:3000/courses/categories
+
+### fetch courses in a specific category
+GET http://localhost:3000/courses/category/:name 

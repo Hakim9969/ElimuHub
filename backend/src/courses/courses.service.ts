@@ -31,6 +31,25 @@ export class CoursesService {
     return this.transformCourse(course);
   }
 
+  async findAllCategories(): Promise<{ name: string }[]> {
+  const categories = await this.prisma.course.findMany({
+    where: {
+      published: true,
+    },
+    select: {
+      category: true,
+    },
+    distinct: ['category'],
+  });
+
+  return categories
+    .map(c => c.category)
+    .filter(Boolean)
+    .map(name => ({ name }));
+}
+
+
+
   async findAll() {
     const courses = await this.prisma.course.findMany({
       where: { published: true },
@@ -83,6 +102,27 @@ export class CoursesService {
 
     return this.transformCourse(course);
   }
+
+  async findByCategory(category: string) {
+  const courses = await this.prisma.course.findMany({
+    where: {
+      category,
+      published: true,
+    },
+    include: {
+      instructor: true,
+      modules: true,
+      enrollments: true,
+      quizzes: true,
+      announcements: true,
+      reviews: true,
+      certificates: true,
+    },
+  });
+  
+
+  return courses.map(course => this.transformCourse(course));
+ }
 
   async update(id: string, userId: string, dto: UpdateCourseDto) {
     const course = await this.prisma.course.findUnique({ where: { id } });

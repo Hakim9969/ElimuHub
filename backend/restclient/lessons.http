@@ -1,0 +1,33 @@
+### 🔐 Set your instructor token here
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTgwMDA4NiwiZXhwIjoxNzUxODg2NDg2fQ.QX4X-mp12QxnmXuSK4GAxVIwTwRWkeCHlUJiLypoOMs
+@content_id = 160dd9b9-2a82-4a1b-9f12-3371964481ad
+@lesson_id = dd3b7216-f3f7-4394-a663-c735f6a2eb9f
+
+### ✅ Create Lesson
+POST http://localhost:3000/contents/{{content_id}}/lessons
+Authorization: Bearer {{instructor_token}}
+Content-Type: application/json
+
+{
+  "title": "Topic 2",
+  "type": "VIDEO",
+  "contentUrl": "https://example.com/video.mp4"
+}
+
+### 📄 Get All Lessons in a Module
+GET http://localhost:3000/contents/{{content_id}}/lessons
+Authorization: Bearer {{instructor_token}}
+
+### ✏️ Update Lesson
+PATCH http://localhost:3000/contents/{{content_id}}/lessons/{{lesson_id}}
+Authorization: Bearer {{instructor_token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Lesson Title",
+  "contentUrl": "https://example.com/updated.mp4"
+}
+
+### ❌ Delete Lesson
+DELETE http://localhost:3000/contents/{{content_id}}/lessons/1d0a8f93-41d3-42b4-8929-4d878b7b6311
+Authorization: Bearer {{instructor_token}}
