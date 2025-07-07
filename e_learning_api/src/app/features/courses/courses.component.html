@@ -1,6 +1,6 @@
 <!-- All Courses -->
 <!--<header>-->
-  <app-header></app-header>
+<app-header></app-header>
 <section class="py-16 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center mb-12">
@@ -61,7 +61,8 @@
           <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ course.description }}</p>
           <div class="flex items-center justify-between">
             <span class="text-sm text-gray-500">By {{ getInstructorName(course) }}</span>
-            <button (click)="handleEnrollClick(course, $event)" class="text-teal-600 hover:text-teal-700 text-sm font-semibold">
+            <button (click)="handleEnrollClick(course, $event)"
+                    class="text-teal-600 hover:text-teal-700 text-sm font-semibold">
               Enroll Now
             </button>
           </div>

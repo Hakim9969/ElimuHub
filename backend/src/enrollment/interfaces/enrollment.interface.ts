@@ -13,8 +13,12 @@ export interface EnrollmentWithCourseAndProgress extends Enrollment {
     category: string;
     difficulty: string;
     published: boolean;
+    image: string | null;
+    instructor: {
+      id: string;
+      name: string;
+    };
   };
-  // existing raw progress entries removed, replaced by counts and percentage
   totalLessons: number;
   progress: number;
   progressPercentage: number; // 0–100

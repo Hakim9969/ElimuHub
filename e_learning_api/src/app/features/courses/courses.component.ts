@@ -149,11 +149,10 @@ export class CoursesComponent implements OnInit {
       const userId = this.authService.getCurrentUser()?.id;
 
       if (userId) {
-        // Enroll the user in the course
         this.enrollmentService.enrollUserInCourse(userId, course.id).subscribe({
           next: (enrollment) => {
-            console.log('Successfully enrolled:', enrollment);
-            this.router.navigate(['/my-courses']);
+            alert('Successfully enrolled:');
+            this.router.navigate(['/enroll/my-courses']);
           },
           error: (error) => {
             console.error('Enrollment failed:', error);
@@ -169,7 +168,6 @@ export class CoursesComponent implements OnInit {
         });
       }
     } else {
-      // Redirect to login with return URL
       this.router.navigate(['/login'], {
         queryParams: { returnUrl: `/courses` }
       });
