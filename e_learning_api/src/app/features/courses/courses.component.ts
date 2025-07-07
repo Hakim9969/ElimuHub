@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
 import { finalize } from 'rxjs';
 import { CourseResponseDto, Difficulty } from '../../../models/course.model';
 import { CourseService } from '../../services/course-service';
+import {AuthService} from '../../services/auth.service';
+import { EnrollmentService } from '../../services/enrollment.service';
+import {HeaderComponent} from '../shared/components/header/header.component';
+import {FooterComponent} from '../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent],
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css']
 })
@@ -16,8 +20,15 @@ export class CoursesComponent implements OnInit {
   courses: CourseResponseDto[] = [];
   coursesLoading = false;
   coursesError: string | null = null;
+  @Input() course!: CourseResponseDto;
+  @Output() enrollClicked = new EventEmitter<CourseResponseDto>();
 
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private router: Router,
+    private authService: AuthService,
+    private enrollmentService: EnrollmentService // Add this injection
+  ) {}
 
   ngOnInit(): void {
     this.fetchCourses();
@@ -128,5 +139,40 @@ export class CoursesComponent implements OnInit {
   onCourseClick(course: CourseResponseDto): void {
     console.log('Course clicked:', course);
     // TODO: Navigate to detail page if needed
+  }
+
+  // Updated method to handle enrollment with course parameter
+  handleEnrollClick(course: CourseResponseDto, event: Event): void {
+    event.stopPropagation(); // Prevent triggering the parent click event
+
+    if (this.authService.isLoggedIn()) {
+      const userId = this.authService.getCurrentUser()?.id;
+
+      if (userId) {
+        // Enroll the user in the course
+        this.enrollmentService.enrollUserInCourse(userId, course.id).subscribe({
+          next: (enrollment) => {
+            console.log('Successfully enrolled:', enrollment);
+            this.router.navigate(['/my-courses']);
+          },
+          error: (error) => {
+            console.error('Enrollment failed:', error);
+            if (error.status === 409) {
+              alert('You are already enrolled in this course!');
+              this.router.navigate(['/enroll/my-courses']);
+            } else if (error.status === 403) {
+              alert('You must complete the prerequisite course first.');
+            } else {
+              alert('Enrollment failed. Please try again.');
+            }
+          }
+        });
+      }
+    } else {
+      // Redirect to login with return URL
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: `/courses` }
+      });
+    }
   }
 }

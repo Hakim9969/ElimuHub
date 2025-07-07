@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CourseResponseDto, CategoryResponseDto, Difficulty } from '../../models/course.model';
-import { environment } from '../../environments/environment';
-
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {CourseResponseDto, CategoryResponseDto, Difficulty} from '../../models/course.model';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -17,7 +16,8 @@ export interface ApiResponse<T> {
 export class CourseService {
   private apiUrl = `${environment.apiUrl}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   /**
    * Fetch all courses from the backend
@@ -74,4 +74,6 @@ export class CourseService {
   getCoursesByDifficulty(difficulty: Difficulty): Observable<CourseResponseDto[]> {
     return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/difficulty/${difficulty}`);
   }
+
 }
+

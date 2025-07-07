@@ -1,0 +1,19 @@
+<div *ngIf="nextModule" class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-6 text-white">
+  <div class="flex items-center justify-between">
+    <div>
+      <h3 class="text-lg font-semibold mb-2">Ready for the Next Module?</h3>
+      <p class="text-blue-100 mb-4">{{ nextModule.title }}</p>
+      <p class="text-sm text-blue-200">{{ nextModule.description }}</p>
+    </div>
+
+    <button
+      (click)="goToNextModule()"
+      class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center space-x-2"
+    >
+      <span>Start Next Module</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+      </svg>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-4">
+          <button
+            (click)="goBack()"
+            class="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <span>Back to Courses</span>
+          </button>
+
+          <div class="h-6 w-px bg-gray-300"></div>
+
+          <div *ngIf="course">
+            <h1 class="text-lg font-semibold text-gray-800">{{ course.title }}</h1>
+            <p class="text-sm text-gray-600">{{ course.instructor }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2 text-sm text-gray-600">
+            <span>Progress:</span>
+            <div class="w-32 bg-gray-200 rounded-full h-2">
+              <div
+                class="bg-green-500 h-2 rounded-full transition-all duration-300"
+                [style.width.%]="progressPercentage"
+              ></div>
+            </div>
+            <span>{{ progressPercentage }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div *ngIf="course" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Module List Sidebar -->
+      <div class="lg:col-span-1">
+        <app-module-list></app-module-list>
+
+        <!-- Next Module Button -->
+        <div class="mt-6" *ngIf="showNextModuleButton">
+          <app-next-module-button></app-next-module-button>
+        </div>
+      </div>
+
+      <!-- Lesson Content -->
+      <div class="lg:col-span-2">
+        <app-lesson-viewer></app-lesson-viewer>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="!course && !error" class="flex items-center justify-center min-h-96">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p class="text-gray-600">Loading course...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="flex items-center justify-center min-h-96">
+      <div class="text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
+          <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Error Loading Course</h3>
+        <p class="text-gray-600 mb-4">{{ error }}</p>
+        <button
+          (click)="loadCourse()"
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
