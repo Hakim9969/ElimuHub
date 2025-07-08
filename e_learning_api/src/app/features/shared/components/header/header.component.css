@@ -1,0 +1,13 @@
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 50; /* Ensures header stays above other content */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for visual changes */
+}
+
+/* Optional: Enhance appearance when sticky */
+header.sticky {
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly translucent background */
+  backdrop-filter: blur(8px); /* Optional blur effect for modern look */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow when sticky */
+}

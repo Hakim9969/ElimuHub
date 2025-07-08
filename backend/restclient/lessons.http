@@ -1,6 +1,6 @@
 ### 🔐 Set your instructor token here
-@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTgwMDA4NiwiZXhwIjoxNzUxODg2NDg2fQ.QX4X-mp12QxnmXuSK4GAxVIwTwRWkeCHlUJiLypoOMs
-@content_id = 160dd9b9-2a82-4a1b-9f12-3371964481ad
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZjhmYWFmNS1hMmMyLTRhNGQtYWE3YS02MWJmNmM3ZWVlMTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTkxOTg2MiwiZXhwIjoxNzUyMDA2MjYyfQ.RrySldNoBkXXuqNzg5euj4AAO3QnCdScvFJSJMAeLGI
+@content_id = 044873fb-6bd7-4fbb-9221-ca07f1464433
 @lesson_id = a0297ec1-e963-470b-ab7d-ede7c39ac879
 
 ### ✅ Create Lesson
@@ -9,9 +9,9 @@ Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "Topic 2",
-  "type": "VIDEO",
-  "contentUrl": "https://example1.com/video.mp4"
+  "title": "Topic 3",
+  "type": "PDF",
+  "contentUrl": "https://www.kanopystreaming.com/sites/default/files/learningspanish.pdf "
 }
 
 ### 📄 Get All Lessons in a Module

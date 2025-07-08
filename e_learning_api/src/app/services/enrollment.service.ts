@@ -49,6 +49,6 @@ export class EnrollmentService {
   }
 
   unenrollUserFromCourse(userId: string, courseId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/enrollment/${userId}/${courseId}`);
+    return this.http.delete(`${this.apiUrl}/enrollment/${courseId}/unenroll`, this.getAuthHeaders());
   }
 }

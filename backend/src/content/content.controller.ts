@@ -44,9 +44,10 @@ export class ContentController {
   }
 
   @Delete(':id')
-    @Roles('INSTRUCTOR', 'ADMIN')
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Param('id') id: string, @Req() req) {
-      return this.contentService.remove(id, req.user.sub, req.user.role);}
+  @Roles('INSTRUCTOR', 'ADMIN')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: string, @Req() req) {
+    return this.contentService.remove(id, req.user.sub, req.user.role);
+  }
 }

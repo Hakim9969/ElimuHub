@@ -3,7 +3,7 @@
 
   <div class="space-y-3" *ngIf="course">
     <div
-      *ngFor="let module of course.modules; let i = index"
+      *ngFor="let module of course.contents; let i = index"
       class="border rounded-lg overflow-hidden transition-all duration-200 hover:shadow-md"
       [class.border-blue-500]="currentModule?.id === module.id"
       [class.bg-blue-50]="currentModule?.id === module.id"
