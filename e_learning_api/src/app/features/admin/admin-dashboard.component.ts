@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // ✅ Add this import
 import { CourseResponseDto, CategoryResponseDto } from '../../../models/course.model';
 import { CourseService } from '../../services/course-service';
@@ -22,7 +22,7 @@ export class AdminDashboardComponent implements OnInit {
   availableRoles: string[] = [];
   categorySectionExpanded = false;
 
-  constructor(private courseService: CourseService, private userService: UserService) {}
+  constructor(private courseService: CourseService, private userService: UserService,  private router: Router) {}
 
   ngOnInit(): void {
     this.loadCourses();
@@ -189,4 +189,9 @@ export class AdminDashboardComponent implements OnInit {
     }
     return this.users.filter(user => user.role === role).length;
   }
+
+  goToLandingPage(): void {
+  this.router.navigate(['/landing']);
+}
+
 }

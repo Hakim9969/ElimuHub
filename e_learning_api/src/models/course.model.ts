@@ -1,11 +1,5 @@
     import { User } from "./user.model";
 
-    export enum Difficulty {
-    BEGINNER = 'Beginner',
-    INTERMEDIATE = 'Intermediate',
-    ADVANCED = 'Advanced'
-    }
-
     export interface CourseResponseDto {
     id: string;
     title: string;
@@ -19,18 +13,115 @@
     createdAt: Date;
     updatedAt: Date;
     instructor: User;
-    modules: any[];
+    contents: ModuleDto[];
     enrollments: any[];
     quizzes: any[];
     announcements: any[];
     reviews: any[];
     certificates: any[];
+      lessons?: CourseLessonDto[];
+      requirements?: string[];
+      whatYouWillLearn?: string[];
+      tags?: string[];
+      language?: string;
+      level?: string;
+      certificate?: boolean;
+      hasPreview?: boolean;
+      previewVideoUrl?: string;
+      estimatedCompletionTime?: string;
+      lastUpdated?: string;
+      totalLessons?: number;
+      totalQuizzes?: number;
+      totalAssignments?: number;
+      skillsGained?: string[];
+      careerBenefits?: string[];
+      targetAudience?: string[];
+      courseOutline?: string;
+      relatedCourses?: string[];
+    }
+
+    export interface CourseLessonDto {
+      id: string;
+      title: string;
+      description: string;
+      order: number;
+      duration: string;
+      type: LessonType;
+      videoUrl?: string;
+      content?: string;
+      isCompleted?: boolean;
+      isLocked?: boolean;
+      notes?: string;
+      transcript?: string;
+      downloadableResources?: string[];
+      practiceExercises?: string[];
+    }
+
+    export enum LessonType {
+      VIDEO = 'video',
+      TEXT = 'text',
+      QUIZ = 'quiz',
+      ASSIGNMENT = 'assignment',
+      LIVE = 'live',
+      INTERACTIVE = 'interactive',
+      DOWNLOAD = 'download'
+    }
+
+    export interface ModuleDto {
+      id: string;
+      title: string;
+      description: string;
+      lessons: LessonDto[];
+      order: number;
+      isCompleted?: boolean;
+    }
+
+    export interface LessonDto {
+      id: string;
+      title: string;
+      content: string;
+      duration: string;
+      order: number;
+      contentUrl?: string;
+      type: string;
+      quiz?: QuizDto;
+      isCompleted?: boolean;
+    }
+
+    export interface QuizDto {
+      id: string;
+      questions: QuestionDto[];
+      passingScore: number;
+    }
+
+    export interface QuestionDto {
+      id: string;
+      question: string;
+      options: string[];
+      correctAnswer: number;
+      type: 'multiple-choice' | 'true-false';
     }
 
     export interface CategoryResponseDto {
-    id: string;
-    name: string;
-    description?: string;
-    courseCount: number;
-    icon?: string;
+      id: string;
+      name: string;
+      description: string;
+    }
+
+    export enum Difficulty {
+      BEGINNER = 'beginner',
+      INTERMEDIATE = 'intermediate',
+      ADVANCED = 'advanced'
+    }
+
+    export interface EnrollmentResponseDto {
+      enrollmentId: string;
+      courseId: string;
+      enrolledAt: Date;
+      course: CourseResponseDto;
+      totalLessons: number;
+      progress: number;
+      progressPercentage: number;
+      certificateIssued: boolean;
+      certificateIssuedAt?: Date;
     }

@@ -1,0 +1,66 @@
+<header class="bg-purple-900 shadow-sm sticky">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="flex items-center gap-1">
+          <div class="w-8 h-8 bg-teal-500 rounded-md flex items-center justify-center">
+            <span class="text-white font-bold text-lg">E</span>
+          </div>
+          <div><span class="font-semibold">limuHub</span></div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="hidden md:flex space-x-8">
+        <a href="#" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">Home</a>
+        <a href="#" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">About</a>
+        <a routerLink="/courses" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">Courses</a>
+        <a href="#" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">Contact</a>
+      </nav>
+
+      <!-- Auth buttons -->
+      <div class="flex items-center space-x-4">
+        <ng-container *ngIf="currentUser$ | async as user; else notLoggedIn">
+          <!-- Logged in state -->
+          <div class="flex items-center space-x-4">
+            <a routerLink="/enroll/my-courses" class="text-blue-500 hover:text-teal-600 px-3 py-2 text-sm font-medium">My-Courses</a>
+
+            <!-- Dashboard Link -->
+<!--            <a routerLink="/dashboard" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">-->
+<!--              Dashboard-->
+<!--            </a>-->
+            <!-- Logout Button -->
+            <button
+              (click)="logout()"
+              class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium"
+            >
+              Logout
+            </button>
+          </div>
+        </ng-container>
+        <ng-template #notLoggedIn>
+          <!-- Not logged in state -->
+          <button routerLink="/login" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">
+            Sign In
+          </button>
+          <button
+            routerLink="/register"
+            class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+          >
+            Sign Up
+          </button>
+        </ng-template>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button class="text-gray-700 hover:text-teal-600 p-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

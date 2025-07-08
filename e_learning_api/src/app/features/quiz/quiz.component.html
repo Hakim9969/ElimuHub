@@ -1,0 +1,122 @@
+<div class="bg-gray-50 rounded-lg p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Quiz</h3>
+
+    <div *ngIf="!showResults">
+        <div class="mb-4">
+            <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
+                <span>Question {{ currentQuestionIndex + 1 }} of {{ quiz.questions.length }}</span>
+                <span>{{ correctAnswers }} / {{ quiz.questions.length }} correct</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div
+                        class="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                        [style.width.%]="((currentQuestionIndex + 1) / quiz.questions.length) * 100"
+                ></div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 mb-6">
+            <h4 class="text-lg font-medium text-gray-800 mb-4">
+                {{ currentQuestion.question }}
+            </h4>
+
+            <div class="space-y-3">
+                <label
+                        *ngFor="let option of currentQuestion.options; let i = index"
+                        class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        [class.border-blue-300]="selectedAnswer === i"
+                        [class.bg-blue-50]="selectedAnswer === i"
+                >
+                    <input
+                            type="radio"
+                            [value]="i"
+                            [(ngModel)]="selectedAnswer"
+                            class="mr-3 text-blue-500 focus:ring-blue-500"
+                    />
+                    <span class="text-gray-700">{{ option }}</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="flex justify-between">
+            <button
+                    *ngIf="currentQuestionIndex > 0"
+                    (click)="previousQuestion()"
+                    class="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+                Previous
+            </button>
+
+            <button
+                    (click)="nextQuestion()"
+                    [disabled]="selectedAnswer === null"
+                    class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ml-auto"
+            >
+                {{ currentQuestionIndex === quiz.questions.length - 1 ? 'Finish Quiz' : 'Next Question' }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Results -->
+    <div *ngIf="showResults" class="text-center">
+        <div class="mb-6">
+            <div
+                    class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4"
+                    [class.bg-green-100]="quizPassed"
+                    [class.bg-red-100]="!quizPassed"
+            >
+                <svg
+                        *ngIf="quizPassed"
+                        class="w-10 h-10 text-green-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                >
+                    <path fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd"></path>
+                </svg>
+                <svg
+                        *ngIf="!quizPassed"
+                        class="w-10 h-10 text-red-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                >
+                    <path fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </div>
+
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">
+                {{ quizPassed ? 'Congratulations!' : 'Try Again' }}
+            </h3>
+
+            <p class="text-gray-600 mb-4">
+                You scored {{ correctAnswers }} out of {{ quiz.questions.length }}
+                ({{ scorePercentage }}%)
+            </p>
+
+            <p class="text-sm text-gray-500 mb-6">
+                {{ quizPassed ? 'You passed the quiz!' : 'You need ' + quiz.passingScore + '% to pass.' }}
+            </p>
+        </div>
+
+        <div class="flex justify-center space-x-4">
+            <button
+                    *ngIf="!quizPassed"
+                    (click)="retakeQuiz()"
+                    class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+                Retake Quiz
+            </button>
+
+            <button
+                    *ngIf="quizPassed"
+                    (click)="continueToNext()"
+                    class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            >
+                Continue
+            </button>
+        </div>
+    </div>
+</div>

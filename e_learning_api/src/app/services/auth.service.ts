@@ -63,7 +63,7 @@ export class AuthService {
     register(userData: RegisterRequest): Observable<AuthResponse> {
         const fixedUserData = {
             ...userData,
-            role: userData.role?.toUpperCase() || 'CUSTOMER' // default to CUSTOMER if undefined
+            role: userData.role?.toUpperCase() || 'CUSTOMER'
         };
         return this.http.post<AuthResponse>(`${this.API_URL}/auth/register`, fixedUserData, this.httpOptions)
             .pipe(

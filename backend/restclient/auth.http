@@ -19,7 +19,7 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-  "name": "Test Instructor",
+  "name": "Instructor",
   "email": "instructor@example.com",
   "password": "Password123",
   "phone": "+254712345679",
@@ -56,8 +56,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "instructor@example.com",
-  "password": "Password123"
+  "email": "jim@instructor.com",
+  "password": "jimjam"
 }
 
 

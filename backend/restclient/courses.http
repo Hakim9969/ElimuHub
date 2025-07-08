@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 @admin_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MjY0YWI1YS1iNmY1LTRlMWItOGU0MS1iNjliNmFlYjMwODciLCJlbWFpbCI6Imhha2lteWFraW0yMDBAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUxOTAxODA1LCJleHAiOjE3NTE5ODgyMDV9.anDGorVvvCd7quZ26rSpN8h1Ocq1h8v4utvynyxlWjY
 @instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTkwMjAxMiwiZXhwIjoxNzUxOTg4NDEyfQ.-lJRk10vykGbq-Z-cIVWFMMeZFnH-Yvu7vWUftg2Izo
+=======
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZjhmYWFmNS1hMmMyLTRhNGQtYWE3YS02MWJmNmM3ZWVlMTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTg3NDI1OSwiZXhwIjoxNzUxOTYwNjU5fQ.PWv6-A4TW3Z8S9iEqUnEWD-bo1kCtQnmsomQHnr5lVE
+>>>>>>> 63f0ad17015202ca82af82a7a38212f92b4cd674
 ###
 
 ### ✅ Create Course (Instructor Only)
@@ -8,13 +12,13 @@ Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "Biz",
+  "title": "Spanish",
   "description": "A complete intro course",
   "category": "Bo",
   "difficulty": "BEGINNER",
   "objectives": "Biz",
   "prerequisites": "Money",
-  "image": "https://example.com/images/angular.png"
+  "image": "https://i.pinimg.com/736x/16/f8/b8/16f8b8fb5b0590b9051178ace842d9ae.jpg"
 }
 
 ###
