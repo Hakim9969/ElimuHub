@@ -73,6 +73,14 @@ export class CoursesController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string, @Req() req) {
-    return this.coursesService.remove(id, req.user.sub);
+    return this.coursesService.remove(id, req.user);
   }
+
+  @Delete('/category/:name')
+@Roles('ADMIN')
+@UseGuards(AuthGuard('jwt'), RolesGuard)
+removeCategory(@Param('name') name: string) {
+  return this.coursesService.removeByCategory(name);
+}
+
 }

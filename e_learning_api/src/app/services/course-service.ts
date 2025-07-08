@@ -74,4 +74,13 @@ export class CourseService {
   getCoursesByDifficulty(difficulty: Difficulty): Observable<CourseResponseDto[]> {
     return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/difficulty/${difficulty}`);
   }
+
+  deleteCourse(id: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/courses/${id}`);
+}
+
+deleteCategory(name: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/courses/category/${encodeURIComponent(name)}`);
+}
+
 }

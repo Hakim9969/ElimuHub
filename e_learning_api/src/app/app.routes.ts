@@ -3,10 +3,15 @@ import {LandingComponent} from './features/landing/landing.component';
 import {AuthComponent} from './core/auth/auth.component';
 import { CoursesComponent } from './features/courses/courses.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
+import { AdminAuthGuard } from './core/guards/admin-auth.guard';
 
 export const routes: Routes = [
   {path: '', component: LandingComponent},
-   { path: 'admin', component: AdminDashboardComponent },
+  {
+  path: 'admin',
+  canActivate: [AdminAuthGuard],
+  loadComponent: () => import('./features/admin/admin-dashboard.component').then(m => m.AdminDashboardComponent)
+  },
   { path: 'courses', component: CoursesComponent },
 
   {path: 'login', component: AuthComponent, data: {mode: 'login'}},
