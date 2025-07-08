@@ -1,4 +1,4 @@
-<header class="bg-white shadow-sm">
+<header class="bg-purple-900 shadow-sm sticky">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
       <!-- Logo -->
@@ -17,7 +17,6 @@
         <a href="#" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">About</a>
         <a routerLink="/courses" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">Courses</a>
         <a href="#" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">Contact</a>
-        <a href="#" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">Reviews</a>
       </nav>
 
       <!-- Auth buttons -->
@@ -25,18 +24,12 @@
         <ng-container *ngIf="currentUser$ | async as user; else notLoggedIn">
           <!-- Logged in state -->
           <div class="flex items-center space-x-4">
-            <a routerLink="/enroll/my-courses" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">My-Courses</a>
+            <a routerLink="/enroll/my-courses" class="text-blue-500 hover:text-teal-600 px-3 py-2 text-sm font-medium">My-Courses</a>
 
-            <!-- Profile Image -->
-            <img
-              class="w-8 h-8 rounded-full object-cover"
-              [src]="user || 'images/Student3.jpg'"
-              alt="Profile"
-            />
             <!-- Dashboard Link -->
-            <a routerLink="/dashboard" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">
-              Dashboard
-            </a>
+<!--            <a routerLink="/dashboard" class="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium">-->
+<!--              Dashboard-->
+<!--            </a>-->
             <!-- Logout Button -->
             <button
               (click)="logout()"

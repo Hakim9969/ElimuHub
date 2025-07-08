@@ -14,7 +14,6 @@ import { filter } from 'rxjs/operators';
   imports: [
     NgForOf,
     NgIf,
-    DatePipe,
     HeaderComponent,
     FooterComponent,
     TitleCasePipe

@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../services/course-service';
 import { LearningService } from '../../services/learning.service';
 import { AuthService } from '../../services/auth.service';
+import {FooterComponent} from '../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-learning-platform',
@@ -16,7 +17,8 @@ import { AuthService } from '../../services/auth.service';
     CommonModule,
     ModuleListComponent,
     LessonViewerComponent,
-    NextModuleButtonComponent
+    NextModuleButtonComponent,
+    FooterComponent
   ],
   templateUrl: './learning-platform.component.html',
   styleUrls: ['./learning-platform.component.css']

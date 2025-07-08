@@ -18,7 +18,7 @@
 
           <div *ngIf="course">
             <h1 class="text-lg font-semibold text-gray-800">{{ course.title }}</h1>
-            <p class="text-sm text-gray-600">{{ course.instructor }}</p>
+            <p class="text-sm text-gray-600 font-light">By {{ course.instructor.name }}</p>
           </div>
         </div>
 
@@ -84,3 +84,5 @@
     </div>
   </main>
 </div>
+<!--footer-->
+<app-footer></app-footer>

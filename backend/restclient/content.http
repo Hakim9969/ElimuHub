@@ -1,20 +1,20 @@
-@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZjhmYWFmNS1hMmMyLTRhNGQtYWE3YS02MWJmNmM3ZWVlMTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTkxOTg2MiwiZXhwIjoxNzUyMDA2MjYyfQ.RrySldNoBkXXuqNzg5euj4AAO3QnCdScvFJSJMAeLGI
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZjhmYWFmNS1hMmMyLTRhNGQtYWE3YS02MWJmNmM3ZWVlMTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTk0NDY5NSwiZXhwIjoxNzUyMDMxMDk1fQ.a3yZDJ7dV3FstDMHEDGNUgv7mDEI-XGRkSf2wi0ZzAc
 
 
 ### 📘 Create Content (Instructor Only)
-POST http://localhost:3000/courses/5103ef6a-375f-4752-97c9-b57b76a65639/contents
+POST http://localhost:3000/courses/cc5b10c5-d74a-451c-82c4-bc9aa56e7e46/contents
 Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "Module 2: Introduction to Spanish Greetings",
-  "order": 3
+  "title": "Module 1: Introduction to Web Design",
+  "order": 1
 }
 
 ###
 
 ### 📗 Get All Content for Course
-GET http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb/contents
+GET http://localhost:3000/courses/cc5b10c5-d74a-451c-82c4-bc9aa56e7e46/contents
 Authorization: Bearer {{instructor_token}}
 
 ###

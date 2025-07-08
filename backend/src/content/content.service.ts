@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
@@ -8,9 +12,14 @@ export class ContentService {
   constructor(private prisma: PrismaService) {}
 
   async create(courseId: string, instructorId: string, dto: CreateContentDto) {
-    const course = await this.prisma.course.findUnique({ where: { id: courseId } });
-    if (!course || course.instructorId !== instructorId) {
-      throw new ForbiddenException('Unauthorized to add content to this course');
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+
+    if (!course || String(course.instructorId) !== String(instructorId)) {
+      throw new ForbiddenException(
+        'Unauthorized to add content to this course',
+      );
     }
 
     return this.prisma.content.create({
@@ -39,23 +48,24 @@ export class ContentService {
   }
 
   async remove(id: string, userId: string, role: string) {
-  const content = await this.prisma.content.findUnique({
-    where: { id },
-    include: { course: true },
-  });
+    const content = await this.prisma.content.findUnique({
+      where: { id },
+      include: { course: true },
+    });
 
-  if (!content) {
-    throw new NotFoundException('Content not found');
+    if (!content) {
+      throw new NotFoundException('Content not found');
+    }
+
+    if (role !== 'ADMIN' && content.course.instructorId !== userId) {
+      throw new ForbiddenException(
+        'You are not authorized to delete this content',
+      );
+    }
+
+    await this.prisma.content.delete({ where: { id } });
+
+    // Return nothing for 204 No Content
+    return;
   }
-
-  if (role !== 'ADMIN' && content.course.instructorId !== userId) {
-    throw new ForbiddenException('You are not authorized to delete this content');
-  }
-
-  await this.prisma.content.delete({ where: { id } });
-
-  // Return nothing for 204 No Content
-  return;
-}
-
 }

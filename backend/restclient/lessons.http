@@ -9,9 +9,9 @@ Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "Topic 2",
-  "type": "VIDEO",
-  "contentUrl": "https://www.youtube.com/watch?v=2SIdIAMzHH0&pp=ygUPaW50cm8gdG8gc3BhbnNo"
+  "title": "Topic 3",
+  "type": "PDF",
+  "contentUrl": "https://www.kanopystreaming.com/sites/default/files/learningspanish.pdf "
 }
 
 ### 📄 Get All Lessons in a Module
