@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {CourseResponseDto, CategoryResponseDto, Difficulty} from '../../models/course.model';
-import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { CourseResponseDto, CategoryResponseDto, Difficulty } from '../../models/course.model';
+import { environment } from '../../environments/environment';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -16,11 +16,10 @@ export interface ApiResponse<T> {
 export class CourseService {
   private apiUrl = `${environment.apiUrl}`;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   /**
-   * Fetch all courses from the backend
+   * Fetch all published courses (public)
    */
   getCourses(): Observable<CourseResponseDto[]> {
     return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses`);
@@ -75,5 +74,31 @@ export class CourseService {
     return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/difficulty/${difficulty}`);
   }
 
-}
+  /**
+   * Fetch courses created by the logged-in instructor
+   */
+  getMyCourses(): Observable<CourseResponseDto[]> {
+    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/my`);
+  }
 
+  /**
+   * Update a course (e.g., publish/unpublish or edit)
+   */
+  updateCourse(courseId: string, updateData: Partial<CourseResponseDto>): Observable<CourseResponseDto> {
+    return this.http.patch<CourseResponseDto>(`${this.apiUrl}/courses/${courseId}`, updateData);
+  }
+
+  /**
+   * Create a new course
+   */
+  createCourse(courseData: Partial<CourseResponseDto>): Observable<CourseResponseDto> {
+    return this.http.post<CourseResponseDto>(`${this.apiUrl}/courses`, courseData);
+  }
+
+  /**
+   * Delete a course by ID
+   */
+  deleteCourse(courseId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/courses/${courseId}`);
+  }
+}
