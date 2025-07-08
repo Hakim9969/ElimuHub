@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // ✅ Add this import
 import { CourseResponseDto, CategoryResponseDto } from '../../../models/course.model';
-import { CourseService } from '../../services/course-service';
+import { CourseService } from '../../services/course.service';
 import { UserResponse } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 
@@ -87,7 +87,7 @@ export class AdminDashboardComponent implements OnInit {
   // Enhanced onRoleChange method with detailed debugging
   onRoleChange(userId: string, newRole: string) {
     console.log('Role change attempted:', { userId, newRole, type: typeof newRole });
-    
+
     // More comprehensive role validation
     const validRoles = ['ADMIN', 'INSTRUCTOR', 'STUDENT'];
     if (!validRoles.includes(newRole)) {
@@ -120,7 +120,7 @@ export class AdminDashboardComponent implements OnInit {
           message: err.message,
           error: err.error
         });
-        
+
         // More specific error handling
         if (err.status === 400) {
           alert('Bad request: Invalid role or user data');
@@ -131,7 +131,7 @@ export class AdminDashboardComponent implements OnInit {
         } else {
           alert(`Failed to update role: ${err.message || 'Unknown error'}`);
         }
-        
+
         // Revert the select to original value
         this.loadUsers();
       }
@@ -141,7 +141,7 @@ export class AdminDashboardComponent implements OnInit {
   // Alternative method to test role updates individually
   testRoleUpdate(userId: string, role: 'ADMIN' | 'INSTRUCTOR' | 'STUDENT') {
     console.log(`Testing ${role} role update for user ${userId}`);
-    
+
     this.userService.updateUser(userId, { role }).subscribe({
       next: (response) => {
         console.log(`${role} update successful:`, response);
@@ -158,7 +158,7 @@ export class AdminDashboardComponent implements OnInit {
       next: (res) => {
         console.log('Available roles from backend:', res);
         this.availableRoles = res.roles;
-        
+
         // Verify STUDENT is in the available roles
         if (!this.availableRoles.includes('STUDENT')) {
           console.warn('STUDENT role not found in available roles!');

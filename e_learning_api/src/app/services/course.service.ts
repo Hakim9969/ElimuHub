@@ -125,7 +125,6 @@ export class CourseService {
       params = params.set('category', filters.category);
     }
 
-    // Add instructor filter
     if (filters.instructor && filters.instructor.trim()) {
       params = params.set('instructor', filters.instructor.trim());
     }

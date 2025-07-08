@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import {CourseService} from '../../services/course-service';
 import {CourseResponseDto} from '../../../models/course.model';
 import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 import {HeaderComponent} from '../shared/components/header/header.component';
 import {FooterComponent} from '../shared/components/footer/footer.component';
+import {CourseService} from "../../services/course.service";
 
 @Component({
   selector: 'app-course-details',
@@ -38,7 +38,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     this.route.paramMap.pipe(
       takeUntil(this.destroy$)
     ).subscribe(params => {
-      const courseId = params.get('id');
+      const courseId = params.get('courseId');
+      console.log('Calling courseService.getCourseById with ID:', courseId);
       if (courseId) {
         this.loadCourse(courseId);
       }
