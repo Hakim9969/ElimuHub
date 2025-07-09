@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
 import {User} from '../../../../../models/user.model';
 import {AuthService} from '../../../../services/auth.service';
@@ -14,10 +14,18 @@ import {AsyncPipe, NgIf} from '@angular/common';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   currentUser$: Observable<User | null>;
+  private userSubscription?: Subscription;
   private logoutSubscription!: Subscription;
+  userName: string | null = null;
+  showLogoutModal = false;
 
-  constructor(private authService: AuthService) {
+
+  constructor(private authService: AuthService,  private router: Router,
+  ) {
     this.currentUser$ = this.authService.currentUser$;
+    this.userSubscription = this.authService.currentUser$.subscribe(user => {
+      this.userName = user?.name ? user.name.split(' ')[0] : null;
+    });
   }
 
   ngOnInit() {
@@ -30,6 +38,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authService.logout();
+    this.showLogoutModal = true;
+    setTimeout(() => {
+      this.authService.logout();
+      this.showLogoutModal = false;
+      this.router.navigate(['/']);
+    }, 1500)
   }
 }

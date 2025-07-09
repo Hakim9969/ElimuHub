@@ -3,7 +3,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {Subject, debounceTime, distinctUntilChanged, takeUntil, Observable} from 'rxjs';
 import {CourseResponseDto, Difficulty, CategoryResponseDto} from '../../../models/course.model';
-import {CourseService, CourseFilters} from '../../services/course-service';
+import {CourseService, CourseFilters} from '../../services/course.service';
 import {AuthService} from '../../services/auth.service';
 import {EnrollmentService} from '../../services/enrollment.service';
 import {HeaderComponent} from '../shared/components/header/header.component';
@@ -21,6 +21,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
   categories: CategoryResponseDto[] = [];
   coursesLoading = false;
   coursesError: string | null = null;
+  enrollmentError: string | null = null;
+
 
   // Filter properties
   searchQuery = '';
@@ -230,40 +232,41 @@ export class CoursesComponent implements OnInit, OnDestroy {
    * Handle enrollment click
    */
   handleEnrollClick(course: CourseResponseDto, event: Event): void {
-    event.stopPropagation();
+  event.stopPropagation();
 
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login'], {
-        queryParams: {returnUrl: '/courses'}
-      });
-      return;
-    }
+  this.enrollmentError = null; // clear previous error
 
-    const userId = this.authService.getCurrentUser()?.id;
-    if (!userId) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-
-    this.enrollmentService.enrollUserInCourse(userId, course.id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          alert('Successfully enrolled!');
-          this.router.navigate(['/enroll/my-courses']);
-        },
-        error: (error) => {
-          if (error.status === 409) {
-            alert('You are already enrolled in this course.');
-          } else if (error.status === 403) {
-            alert('You must complete the prerequisite course first.');
-          } else {
-            alert('Enrollment failed. Please try again.');
-          }
-        }
-      });
+  if (!this.authService.isLoggedIn()) {
+    this.router.navigate(['/login'], {
+      queryParams: { returnUrl: '/courses' }
+    });
+    return;
   }
+
+  const userId = this.authService.getCurrentUser()?.id;
+  if (!userId) {
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  this.enrollmentService.enrollUserInCourse(userId, course.id)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: () => {
+        this.router.navigate(['/enroll/my-courses']);
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          this.enrollmentError = 'You are already enrolled in this course.';
+        } else if (error.status === 403) {
+          this.enrollmentError = 'You must be a student to enroll.';
+        } else {
+          this.enrollmentError = 'Enrollment failed. Please try again.';
+        }
+      }
+    });
+}
+
 
   /**
    * Get available difficulties for dropdown

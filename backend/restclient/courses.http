@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+@admin_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MjY0YWI1YS1iNmY1LTRlMWItOGU0MS1iNjliNmFlYjMwODciLCJlbWFpbCI6Imhha2lteWFraW0yMDBAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUxOTAxODA1LCJleHAiOjE3NTE5ODgyMDV9.anDGorVvvCd7quZ26rSpN8h1Ocq1h8v4utvynyxlWjY
+@instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYzY2MTdhOS01NjM3LTRiZTgtOTc3OS1lMDJkNzZlZDQyNTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTkwMjAxMiwiZXhwIjoxNzUxOTg4NDEyfQ.-lJRk10vykGbq-Z-cIVWFMMeZFnH-Yvu7vWUftg2Izo
+=======
 @instructor_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZjhmYWFmNS1hMmMyLTRhNGQtYWE3YS02MWJmNmM3ZWVlMTIiLCJlbWFpbCI6Imluc3RydWN0b3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImlhdCI6MTc1MTg3NDI1OSwiZXhwIjoxNzUxOTYwNjU5fQ.PWv6-A4TW3Z8S9iEqUnEWD-bo1kCtQnmsomQHnr5lVE
+>>>>>>> 63f0ad17015202ca82af82a7a38212f92b4cd674
 ###
 
 ### ✅ Create Course (Instructor Only)
@@ -9,7 +14,7 @@ Content-Type: application/json
 {
   "title": "Spanish",
   "description": "A complete intro course",
-  "category": "Business",
+  "category": "Bo",
   "difficulty": "BEGINNER",
   "objectives": "Biz",
   "prerequisites": "Money",
@@ -30,25 +35,25 @@ Authorization: Bearer {{instructor_token}}
 ###
 
 ### 📄 Get One Course by ID
-GET http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
+GET http://localhost:3000/courses/888baab1-2c0b-4612-9d28-216927ba43dd
 Authorization: Bearer {{instructor_token}}
 
 ###
 
 ### ✏️ Update Course
-PATCH http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
+PATCH http://localhost:3000/courses/8cd014a1-c081-4ce5-8ea8-2c146e4c67a4
 Authorization: Bearer {{instructor_token}}
 Content-Type: application/json
 
 {
-  "title": "NestJS for Beginners - Updated",
+  
   "published": true
 }
 
 ###
 
 ### ❌ Delete Course
-DELETE http://localhost:3000/courses/ab1f49df-8094-476b-9692-876ac0dce926
+DELETE http://localhost:3000/courses/2a9aae4e-5a5b-4896-b8fd-c3c2fd9a63fb
 Authorization: Bearer {{instructor_token}}
 
 ### Get course by category
@@ -60,3 +65,7 @@ GET http://localhost:3000/courses/categories
 
 ### fetch courses in a specific category
 GET http://localhost:3000/courses/category/:name 
+
+### Delete all courses under a specific category
+DELETE http://localhost:3000/courses/category/Biz
+Authorization: Bearer {{admin_token}}

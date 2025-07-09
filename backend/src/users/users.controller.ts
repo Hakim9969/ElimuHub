@@ -27,6 +27,7 @@ import {
 import { CreateUserResponseDto, ErrorResponseDto } from './interfaces';
 import { UserResponse } from './interfaces/user.interface';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from 'src/auth/decorators/role-decorator';
 
 @ApiTags('Users')
 @Controller('users')
@@ -87,6 +88,7 @@ export class UsersController {
    */
   @Get()
   @UseGuards(JwtAuthGuard)
+  @Roles('ADMIN')
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Get all users',
@@ -104,6 +106,16 @@ export class UsersController {
       count: users.length,
     };
   }
+
+  
+  @Get('/roles')
+@ApiOperation({ summary: 'Get all user roles' })
+@HttpCode(HttpStatus.OK)
+getRoles(): { roles: string[] } {
+  return {
+    roles: ['ADMIN', 'INSTRUCTOR', 'STUDENT']
+  };
+}
 
   /**
    * Get user profile (own profile or admin can view any)
@@ -156,11 +168,13 @@ export class UsersController {
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
+     @Request() req: any
+    
   ): Promise<{
     message: string;
     user: UserResponse;
   }> {
-    const user = await this.userService.update(id, updateUserDto);
+    const user = await this.userService.update(id, updateUserDto, req.user);
 
     return {
       message: 'User updated successfully',
@@ -174,6 +188,7 @@ export class UsersController {
    */
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @Roles('ADMIN')
   @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
@@ -197,4 +212,6 @@ export class UsersController {
   async remove(@Param('id') id: string): Promise<void> {
     await this.userService.remove(id);
   }
+
+
 }

@@ -83,6 +83,31 @@ export class CourseService {
     if (filters.instructor?.trim()) params = params.set('instructor', filters.instructor.trim());
     if (filters.isNew !== undefined) params = params.set('isNew', filters.isNew.toString());
 
+    // Add search parameter
+    if (filters.search && filters.search.trim()) {
+      params = params.set('search', filters.search.trim());
+    }
+
+    // Add difficulty filter
+    if (filters.difficulty && filters.difficulty !== '') {
+      params = params.set('difficulty', filters.difficulty);
+    }
+
+    // Add category filter
+    if (filters.category && filters.category !== '') {
+      params = params.set('category', filters.category);
+    }
+
+    if (filters.instructor && filters.instructor.trim()) {
+      params = params.set('instructor', filters.instructor.trim());
+    }
+
+    // Add new courses filter
+    if (filters.isNew !== undefined) {
+      params = params.set('isNew', filters.isNew.toString());
+    }
+
+    // Add pagination (default values)
     const page = filters.page || 1;
     const limit = filters.limit || 10;
     params = params.set('page', page.toString()).set('limit', limit.toString());
@@ -141,13 +166,18 @@ export class CourseService {
     return this.http.patch<CourseResponseDto>(`${this.apiUrl}/courses/${courseId}`, updateData, this.getAuthHeaders());
   }
 
-  deleteCourse(courseId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/courses/${courseId}`, this.getAuthHeaders());
-  }
+
   addModule(courseId: string, moduleData: { title: string; order: number }) {
     const url = `${this.apiUrl}/courses/${courseId}/contents`;
     return this.http.post(url, moduleData, this.getAuthHeaders()); 
   }
 
+  deleteCourse(id: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/courses/${id}`);
+}
+
+deleteCategory(name: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/courses/category/${encodeURIComponent(name)}`);
+}
 
 }

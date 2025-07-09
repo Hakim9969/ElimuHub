@@ -49,7 +49,7 @@ export class EnrollmentService {
       });
       if (!prereq)
         throw new ForbiddenException(
-          'You must complete the prerequisite course first.',
+          'You must be a student to enroll.',
         );
     }
 

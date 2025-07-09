@@ -54,7 +54,7 @@ model Course {
 
   // Relations
   instructorId  String
-  instructor    User             @relation("InstructorCourses", fields: [instructorId], references: [id])
+  instructor    User             @relation("InstructorCourses", fields: [instructorId], references: [id], onDelete: Cascade)
   modules       Content[]
   enrollments   Enrollment[]
   quizzes       Quiz[]
@@ -77,7 +77,7 @@ model Content {
   createdAt DateTime   @default(now())
 
   // Relations
-  course    Course     @relation(fields: [courseId], references: [id])
+  course    Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lessons   Lesson[]
 }
 
@@ -90,7 +90,7 @@ model Lesson {
   createdAt  DateTime   @default(now())
 
   // Relations
-  module     Content @relation(fields: [moduleId], references: [id])
+  module     Content @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   progresses Progress[]
 }
 
@@ -101,8 +101,8 @@ model Enrollment {
   enrolledAt DateTime    @default(now())
 
   // Relations
-  user       User        @relation(fields: [userId], references: [id])
-  course     Course      @relation(fields: [courseId], references: [id])
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
   progress   Progress[]
 }
 
@@ -114,8 +114,8 @@ model Progress {
   completedAt  DateTime?
 
   // Relations
-  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
-  lesson       Lesson     @relation(fields: [lessonId], references: [id])
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lesson       Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
 @@unique([enrollmentId, lessonId])
 }
@@ -128,8 +128,8 @@ model Certificate {
   issuedAt   DateTime   @default(now())
 
   // Relations
-  user       User       @relation(fields: [userId], references: [id])
-  course     Course     @relation(fields: [courseId], references: [id])
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Quiz {
@@ -144,7 +144,7 @@ model Quiz {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
-  course       Course      @relation(fields: [courseId], references: [id])
+  course       Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
   questions    Question[]
   attempts     QuizAttempt[]
 }
@@ -159,7 +159,7 @@ model Question {
   points       Int         @default(1)
   order        Int         @default(0)
 
-  quiz         Quiz        @relation(fields: [quizId], references: [id])
+  quiz         Quiz        @relation(fields: [quizId], references: [id], onDelete: Cascade)
   responses    QuizResponse[]
 }
 
@@ -176,8 +176,8 @@ model QuizAttempt {
   submittedAt  DateTime?
   status       AttemptStatus @default(IN_PROGRESS)
 
-  user         User       @relation(fields: [userId], references: [id])
-  quiz         Quiz       @relation(fields: [quizId], references: [id])
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz         Quiz       @relation(fields: [quizId], references: [id], onDelete: Cascade)
   responses    QuizResponse[]
 
   @@unique([userId, quizId, attemptNumber])
@@ -192,8 +192,8 @@ model QuizResponse {
   isCorrect    Boolean     @default(false)
   pointsEarned Float       @default(0)
 
-  attempt      QuizAttempt @relation(fields: [attemptId], references: [id])
-  question     Question    @relation(fields: [questionId], references: [id])
+  attempt      QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question     Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([attemptId, questionId])
 }
@@ -207,8 +207,8 @@ model CourseReview {
   createdAt DateTime   @default(now())
 
   // Relations
-  user      User       @relation(fields: [userId], references: [id])
-  course    Course     @relation(fields: [courseId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Announcement {
@@ -219,11 +219,11 @@ model Announcement {
   postedAt  DateTime   @default(now())
 
   // Relations
-  course    Course     @relation(fields: [courseId], references: [id])
+  course    Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 model PasswordResetToken {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   token     String   @unique
   expiresAt DateTime
@@ -241,8 +241,8 @@ model Message {
   sentAt     DateTime   @default(now())
 
   // Relations
-  sender     User       @relation("SenderMessages", fields: [senderId], references: [id])
-  receiver   User       @relation("ReceiverMessages", fields: [receiverId], references: [id])
+  sender     User       @relation("SenderMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User       @relation("ReceiverMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
 // Enums

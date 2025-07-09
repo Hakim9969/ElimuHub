@@ -3,7 +3,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center mb-12">
       <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">All Courses</h2>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Courses</h2>
         <p class="text-gray-600">Browse our complete catalog of courses.</p>
       </div>
     </div>
@@ -195,6 +195,10 @@
           <div class="mt-2 text-xs text-gray-400">
             Created: {{ formatDate(course.createdAt) }}
           </div>
+
+          <div *ngIf="enrollmentError" class="mt-2 text-sm text-red-600">
+  {{ enrollmentError }}
+</div>
         </div>
       </div>
     </div>

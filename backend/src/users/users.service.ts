@@ -130,6 +130,7 @@ export class UserService implements IuserService {
   async update(
       id: string,
       updateUserDto: UpdateUserDto,
+      requester?: any
   ): Promise<UserResponse> {
     // Check if user exists
     const existingUser = await this.prisma.user.findUnique({
@@ -139,6 +140,11 @@ export class UserService implements IuserService {
     if (!existingUser) {
       throw new NotFoundException('User not found');
     }
+
+     // Prevent role update unless requester is ADMIN
+  if (updateUserDto.role && requester?.role !== 'ADMIN') {
+    throw new ConflictException('Only admins can change user roles');
+  }
 
     // Check if email is being updated and if it's already taken
     if (updateUserDto.email && updateUserDto.email !== existingUser.email) {

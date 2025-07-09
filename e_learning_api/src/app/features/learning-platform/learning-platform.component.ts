@@ -5,7 +5,7 @@ import { LessonViewerComponent } from '../lesson-viewer/lesson-viewer.component'
 import { NextModuleButtonComponent } from '../next-module-button/next-module-button.component';
 import { CourseResponseDto, LessonDto } from '../../../models/course.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '../../services/course-service';
+import { CourseService } from '../../services/course.service';
 import { LearningService } from '../../services/learning.service';
 import { AuthService } from '../../services/auth.service';
 import {FooterComponent} from '../shared/components/footer/footer.component';

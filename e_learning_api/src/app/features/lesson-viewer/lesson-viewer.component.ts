@@ -9,7 +9,7 @@ import {FooterComponent} from "../shared/components/footer/footer.component";
 @Component({
   selector: 'app-lesson-viewer',
   standalone: true,
-  imports: [CommonModule, QuizComponent, FooterComponent],
+  imports: [CommonModule, QuizComponent],
   templateUrl: './lesson-viewer.component.html',
   styleUrl: './lesson-viewer.component.css'
 })

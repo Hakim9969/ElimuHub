@@ -11,6 +11,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Get the auth token from the service
   const authToken = authService.getToken();
 
+  console.log('[AuthInterceptor] Intercepting:', req.method, req.url);
+  console.log('[AuthInterceptor] Token:', authToken);
+
+
   // Clone the request and add the authorization header if token exists
   if (authToken) {
     req = req.clone({

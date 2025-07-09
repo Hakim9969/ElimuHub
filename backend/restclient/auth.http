@@ -1,3 +1,5 @@
+@admin_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MjY0YWI1YS1iNmY1LTRlMWItOGU0MS1iNjliNmFlYjMwODciLCJlbWFpbCI6Imhha2lteWFraW0yMDBAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUxOTAxODA1LCJleHAiOjE3NTE5ODgyMDV9.anDGorVvvCd7quZ26rSpN8h1Ocq1h8v4utvynyxlWjY
+
 ### Register User (Student by default)
 POST http://localhost:3000/auth/register
 Content-Type: application/json
@@ -67,4 +69,14 @@ Content-Type: application/json
 {
   "email": "hakimyakim200@gmail.com",
   "password": "hakim200"
+}
+
+
+### Update user role (Admin only)
+PATCH http://localhost:3000/users/{{userId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "role": "INSTRUCTOR"
 }

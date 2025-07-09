@@ -192,13 +192,35 @@ export class CoursesService {
     return this.transformCourse(updatedCourse);
   }
 
-  async remove(id: string, userId: string) {
+  async remove(id: string, user: any) {
     const course = await this.prisma.course.findUnique({ where: { id } });
     if (!course) throw new NotFoundException('Course not found');
-    if (course.instructorId !== userId)
+
+    // Allow deletion if user is the instructor OR an admin
+    if (course.instructorId !== user.id && user.role !== 'ADMIN') {
       throw new ForbiddenException('You cannot delete this course');
+    }
 
     return this.prisma.course.delete({ where: { id } });
+  }
+
+  async removeByCategory(name: string) {
+    const courses = await this.prisma.course.findMany({
+      where: { category: name },
+    });
+
+    if (!courses.length) {
+      throw new NotFoundException(`No courses found under category "${name}"`);
+    }
+
+    // Delete all courses under this category
+    await this.prisma.course.deleteMany({
+      where: { category: name },
+    });
+
+    return {
+      message: `Deleted ${courses.length} course(s) under category "${name}"`,
+    };
   }
 
   private transformCourse(course: any) {
@@ -221,7 +243,8 @@ export class CoursesService {
         id: instructor.id,
         name: instructor.name,
       },
-      contents: modules?.map((module) => ({
+      contents:
+        modules?.map((module) => ({
           id: module.id,
           title: module.title,
           description: module.description,
