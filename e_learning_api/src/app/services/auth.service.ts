@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Observable, BehaviorSubject, throwError, Subject} from 'rxjs';
+import { Observable, BehaviorSubject, throwError, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 import {
     AuthResponse,
     ForgotPasswordRequest,
@@ -16,7 +16,7 @@ import {
     providedIn: 'root'
 })
 export class AuthService {
-    private readonly API_URL =  environment.apiUrl;
+    private readonly API_URL = environment.apiUrl;
     private userSubject = new BehaviorSubject<User | null>(null);
     private logoutSubject = new Subject<void>();
 
@@ -27,7 +27,7 @@ export class AuthService {
     };
 
 
-    constructor(private http: HttpClient,  private router: Router) {
+    constructor(private http: HttpClient, private router: Router) {
         // Check if user is already logged in
         this.loadUserFromStorage();
     }
@@ -47,10 +47,14 @@ export class AuthService {
             .pipe(
                 tap(response => {
                     this.setSession(response);
+                    this.userSubject.next(response.user);
 
-                    this.userSubject.next(response.user)
-                    if (response.user.role.toUpperCase() === 'ADMIN') {
+                    const role = response.user.role?.toUpperCase();
+
+                    if (role === 'ADMIN') {
                         this.router.navigate(['/admin']);
+                    } else if (role === 'INSTRUCTOR') {
+                        this.router.navigate(['/instructor']);
                     } else {
                         this.router.navigate(['/']);
                     }
@@ -58,6 +62,7 @@ export class AuthService {
                 catchError(this.handleError)
             );
     }
+
 
     // Register method
     register(userData: RegisterRequest): Observable<AuthResponse> {
@@ -75,16 +80,16 @@ export class AuthService {
     }
 
     // Forgot password method
-    forgotPassword(data: ForgotPasswordRequest): Observable<{message: string}> {
-        return this.http.post<{message: string}>(`${this.API_URL}/auth/forgot-password`, data, this.httpOptions)
+    forgotPassword(data: ForgotPasswordRequest): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(`${this.API_URL}/auth/forgot-password`, data, this.httpOptions)
             .pipe(
                 catchError(this.handleError)
             );
     }
 
     // Reset password method
-    resetPassword(data: ResetPasswordRequest): Observable<{message: string}> {
-        return this.http.post<{message: string}>(`${this.API_URL}/auth/reset-password`, data, this.httpOptions)
+    resetPassword(data: ResetPasswordRequest): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(`${this.API_URL}/auth/reset-password`, data, this.httpOptions)
             .pipe(
                 catchError(this.handleError)
             );

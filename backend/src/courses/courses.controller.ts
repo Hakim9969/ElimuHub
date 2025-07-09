@@ -59,8 +59,6 @@ export class CoursesController {
 
   
 
-
-
   @Patch(':id')
   @Roles('INSTRUCTOR')
   @UseGuards(AuthGuard('jwt'), RolesGuard)

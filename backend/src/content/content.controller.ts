@@ -18,13 +18,13 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
 
-@Controller('courses/:courseId/contents')
+@Controller()
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 @Roles('INSTRUCTOR')
 export class ContentController {
   constructor(private readonly contentService: ContentService) {}
 
-  @Post()
+  @Post('courses/:courseId/contents')
   create(
     @Param('courseId') courseId: string,
     @Body() dto: CreateContentDto,
@@ -33,17 +33,17 @@ export class ContentController {
     return this.contentService.create(courseId, req.user.sub, dto);
   }
 
-  @Get()
+  @Get('courses/:courseId/contents')
   findAll(@Param('courseId') courseId: string) {
     return this.contentService.findAll(courseId);
   }
 
-  @Patch('/:id')
+  @Patch('courses/:courseId/contents/:id')
   update(@Param('id') id: string, @Body() dto: UpdateContentDto) {
     return this.contentService.update(id, dto);
   }
 
-  @Delete(':id')
+  @Delete('courses/:courseId/contents/:id')
   @Roles('INSTRUCTOR', 'ADMIN')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @HttpCode(HttpStatus.NO_CONTENT)

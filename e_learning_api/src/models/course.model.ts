@@ -1,4 +1,4 @@
-import { User } from './user.model'; // Align with your colleague's import
+import { User } from './user.model';
 
 export enum Difficulty {
   BEGINNER = 'beginner',
@@ -6,93 +6,99 @@ export enum Difficulty {
   ADVANCED = 'advanced'
 }
 
-    export interface CourseResponseDto {
-    id: string;
-    title: string;
-    description: string;
-    category: string;
-    difficulty: Difficulty;
-    objectives?: string;
-    prerequisites?: string;
-    published: boolean;
-    image?: string;
-    createdAt: Date;
-    updatedAt: Date;
-    instructor: User;
-    contents: ModuleDto[];
-    enrollments: any[];
-    quizzes: any[];
-    announcements: any[];
-    reviews: any[];
-    certificates: any[];
-      lessons?: CourseLessonDto[];
-      requirements?: string[];
-      whatYouWillLearn?: string[];
-      tags?: string[];
-      language?: string;
-      level?: string;
-      certificate?: boolean;
-      hasPreview?: boolean;
-      previewVideoUrl?: string;
-      estimatedCompletionTime?: string;
-      lastUpdated?: string;
-      totalLessons?: number;
-      totalQuizzes?: number;
-      totalAssignments?: number;
-      skillsGained?: string[];
-      careerBenefits?: string[];
-      targetAudience?: string[];
-      courseOutline?: string;
-      relatedCourses?: string[];
-    }
+export interface CourseResponseDto {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  difficulty: Difficulty;
+  objectives?: string;
+  prerequisites?: string;
+  published: boolean;
+  image?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  instructor: User;
+  contents: ModuleDto[];
+  enrollments: any[];
+  quizzes: any[];
+  announcements: any[];
+  reviews: any[];
+  certificates: any[];
+  lessons?: CourseLessonDto[];
+  requirements?: string[];
+  whatYouWillLearn?: string[];
+  tags?: string[];
+  language?: string;
+  level?: string;
+  certificate?: boolean;
+  hasPreview?: boolean;
+  previewVideoUrl?: string;
+  estimatedCompletionTime?: string;
+  lastUpdated?: string;
+  totalLessons?: number;
+  totalQuizzes?: number;
+  totalAssignments?: number;
+  skillsGained?: string[];
+  careerBenefits?: string[];
+  targetAudience?: string[];
+  courseOutline?: string;
+  relatedCourses?: string[];
+}
 
-    export interface CourseLessonDto {
-      id: string;
-      title: string;
-      description: string;
-      order: number;
-      duration: string;
-      type: LessonType;
-      videoUrl?: string;
-      content?: string;
-      isCompleted?: boolean;
-      isLocked?: boolean;
-      notes?: string;
-      transcript?: string;
-      downloadableResources?: string[];
-      practiceExercises?: string[];
-    }
+export interface CourseLessonDto {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  duration: string;
+  type: LessonType;
+  videoUrl?: string;
+  content?: string;
+  isCompleted?: boolean;
+  isLocked?: boolean;
+  notes?: string;
+  transcript?: string;
+  downloadableResources?: string[];
+  practiceExercises?: string[];
+}
 
-    export enum LessonType {
-      VIDEO = 'video',
-      TEXT = 'text',
-      QUIZ = 'quiz',
-      ASSIGNMENT = 'assignment',
-      LIVE = 'live',
-      INTERACTIVE = 'interactive',
-      DOWNLOAD = 'download'
-    }
+export interface CategoryResponseDto {
+  id: string;
+  name: string;
+  description: string;
+}
 
-    export interface ModuleDto {
-      id: string;
-      title: string;
-      description: string;
-      lessons: LessonDto[];
-      order: number;
-      isCompleted?: boolean;
-    }
+export enum LessonType {
+  VIDEO = 'video',
+  TEXT = 'text',
+  QUIZ = 'quiz',
+  ASSIGNMENT = 'assignment',
+  LIVE = 'live',
+  INTERACTIVE = 'interactive',
+  DOWNLOAD = 'download'
+}
 
-    export interface LessonDto {
-      id: string;
-      title: string;
-      content: string;
-      duration: string;
-      order: number;
-      contentUrl?: string;
-      type: string;
-      quiz?: QuizDto;
-      isCompleted?: boolean;
-    }
+export interface ModuleDto {
+  id: string;
+  title: string;
+  description: string;
+  lessons: LessonDto[];
+  order: number;
+  isCompleted?: boolean;
+}
+
+export interface LessonDto {
+  id: string;
+  title: string;
+  content: string;
+  duration: string;
+  order: number;
+  contentUrl?: string;
+  type: string;
+  quiz?: QuizDto;
+  isCompleted?: boolean;
+}
 
 export interface QuizDto {
   id: string;

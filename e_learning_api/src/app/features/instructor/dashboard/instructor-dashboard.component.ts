@@ -2,11 +2,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { CourseService } from '../../../services/course-service';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-instructor-dashboard',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, FormsModule],
+  imports: [NgIf, NgFor, NgClass, FormsModule,RouterLink],
   templateUrl: './instructor-dashboard.component.html',
   styleUrls: ['./instructor-dashboard.component.css'],
 })
@@ -24,7 +25,10 @@ export class InstructorDashboardComponent implements OnInit {
     title: '',
     description: '',
     category: '',
-    difficulty: ''
+    difficulty: '', // should be a valid enum value
+    objectives: '',
+    prerequisites: '',
+    image: ''
   };
 
   selectedCourse: any = null;
@@ -42,7 +46,7 @@ export class InstructorDashboardComponent implements OnInit {
       next: (courses) => {
         this.courses = courses;
         this.publishedCourses = courses.filter(c => c.published).length;
-        this.totalLessons = courses.reduce((sum, c) => sum + (c.modules?.length || 0), 0);
+        this.totalLessons = courses.reduce((sum, c) => sum + (c.contents?.length || 0), 0);
         this.totalStudents = courses.reduce((sum, c) => sum + (c.enrollments?.length || 0), 0);
       },
       error: (err) => {
@@ -60,7 +64,16 @@ export class InstructorDashboardComponent implements OnInit {
   }
 
   addCourse() {
-    if (this.selectedCourse && this.selectedCourse.id) {
+    console.log('Submitting course:', this.newCourse);
+    
+    // Validate required fields
+    const { title, description, category, difficulty } = this.newCourse;
+    if (!title || !description || !category || !difficulty) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    if (this.selectedCourse?.id) {
       this.courseService.updateCourse(this.selectedCourse.id, this.selectedCourse).subscribe({
         next: (res) => {
           console.log('Course updated', res);
@@ -80,6 +93,7 @@ export class InstructorDashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Create failed', err);
+          alert('Failed to create course: ' + err.error?.message || err.message);
         }
       });
     }
@@ -91,7 +105,10 @@ export class InstructorDashboardComponent implements OnInit {
       title: '',
       description: '',
       category: '',
-      difficulty: ''
+      difficulty: '',
+      objectives: '',
+      prerequisites: '',
+      image: ''
     };
     this.selectedCourse = null;
   }
@@ -101,7 +118,7 @@ export class InstructorDashboardComponent implements OnInit {
     this.showAddCourseForm = true;
   }
 
-  // ✅ DELETE COURSE
+  // DELETE COURSE
   deleteCourse(courseId: string): void {
     if (confirm('Are you sure you want to delete this course?')) {
       this.courseService.deleteCourse(courseId).subscribe({

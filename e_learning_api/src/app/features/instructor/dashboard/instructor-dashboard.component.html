@@ -4,7 +4,7 @@
     <!-- Branding -->
     <div class="flex flex-col items-center text-center mb-10">
       <div class="flex items-center gap-4">
-        <img src="/e_learning_api/public/images/elimu-avatar.png" alt="Elimu Hub Logo"
+        <img src="/images/elimu-avatar.png" alt="Elimu Hub Logo"
           class="w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow" />
         <h1 class="text-4xl font-extrabold text-blue-800 tracking-tight">Elimu Hub</h1>
       </div>
@@ -59,11 +59,12 @@
             class="border rounded p-2 w-full" />
 
           <select name="difficulty" [(ngModel)]="courseFormModel.difficulty" required class="border rounded p-2 w-full">
-            <option [ngValue]="''" disabled>Difficulty</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
+            <option value="" disabled selected>Select Difficulty</option>
+            <option value="BEGINNER">BEGINNER</option>
+            <option value="INTERMEDIATE">INTERMEDIATE</option>
+            <option value="ADVANCED">ADVANCED</option>
           </select>
+
 
           <textarea name="description" [(ngModel)]="courseFormModel.description" placeholder="Description" required
             class="border rounded p-2 w-full md:col-span-2">
@@ -108,9 +109,12 @@
                   </span>
                 </td>
                 <td class="px-4 py-2 flex gap-2">
-                  <button class="bg-blue-600 text-white px-3 py-1 text-xs rounded hover:bg-blue-700 transition">
-                    View
+                    <button [routerLink]="['/instructor/course', course.id, 'contents']"
+                    class="bg-blue-600 text-white px-3 py-1 text-xs rounded hover:bg-blue-700 transition">
+                    Add Content
                   </button>
+
+
                   <button (click)="editCourse(course)"
                     class="bg-yellow-500 text-white px-3 py-1 text-xs rounded hover:bg-yellow-600 transition">
                     Edit

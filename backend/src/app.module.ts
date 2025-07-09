@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CoursesModule } from './courses/courses.module';
+import { ConfigModule } from '@nestjs/config';
 import { ContentModule } from './content/content.module';
 import { EnrollmentModule } from './enrollment/enrollment.module';
 import { ProgressModule } from './progress/progress.module';
@@ -19,8 +20,10 @@ import { UsersController } from './users/users.controller';
 import { LessonModule } from './lesson/lesson.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, CoursesModule, ContentModule, LessonModule, EnrollmentModule, ProgressModule, QuizzesModule, ReviewsModule, CertificatesModule, AnnouncementsModule, MessagesModule, AnalyticsModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    PrismaModule, AuthModule, UsersModule, CoursesModule, ContentModule, LessonModule, EnrollmentModule, ProgressModule, QuizzesModule, ReviewsModule, CertificatesModule, AnnouncementsModule, MessagesModule, AnalyticsModule],
   controllers: [AppController, UsersController],
   providers: [AppService, UserService],
 })
-export class AppModule {}
+export class AppModule { }
