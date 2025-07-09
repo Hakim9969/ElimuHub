@@ -1,18 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {DatePipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
-import {EnrollmentResponse, EnrollmentService} from '../../services/enrollment.service';
-import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
-import {HeaderComponent} from '../shared/components/header/header.component';
-import {FooterComponent} from '../shared/components/footer/footer.component';
-import {CourseResponseDto, Difficulty} from '../../../models/course.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DatePipe, NgForOf, NgIf, TitleCasePipe } from '@angular/common';
+import { EnrollmentResponse, EnrollmentService } from '../../services/enrollment.service';
+import { AuthService } from '../../services/auth.service';
+import { Router, NavigationEnd } from '@angular/router';
+import { HeaderComponent } from '../shared/components/header/header.component';
+import { FooterComponent } from '../shared/components/footer/footer.component';
+import { CourseResponseDto, Difficulty } from '../../../models/course.model';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-courses',
   imports: [
     NgForOf,
     NgIf,
-    DatePipe,
     HeaderComponent,
     FooterComponent,
     TitleCasePipe
@@ -20,26 +21,40 @@ import {CourseResponseDto, Difficulty} from '../../../models/course.model';
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.css'
 })
-export class MyCoursesComponent implements OnInit {
+export class MyCoursesComponent implements OnInit, OnDestroy {
   enrollments: EnrollmentResponse[] = [];
   coursesLoading = true;
   error: string | null = null;
   currentUserId: string | null = null;
+  private routerSubscription?: Subscription;
 
   constructor(
     private router: Router,
     private enrollmentService: EnrollmentService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentUser()?.id ?? null;
+
     if (this.currentUserId) {
       this.loadEnrollments();
     } else {
       this.coursesLoading = false;
       this.error = 'User not authenticated';
     }
+
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(event => {
+        if ((event as NavigationEnd).url === '/my-courses') {
+          this.loadEnrollments();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
   }
 
   private loadEnrollments() {
@@ -75,7 +90,7 @@ export class MyCoursesComponent implements OnInit {
   }
 
   getInstructorName(course: CourseResponseDto): string {
-    return `${course.instructor.name} `;
+    return `${course.instructor.name}`;
   }
 
   formatDate(date: Date): string {
@@ -87,7 +102,7 @@ export class MyCoursesComponent implements OnInit {
   }
 
   startLearning(courseId: string) {
-    this.router.navigate(['/course', courseId, 'learn']);
+    this.router.navigate(['/enroll/learn', courseId]);
   }
 
   unenroll(courseId: string) {
@@ -96,7 +111,6 @@ export class MyCoursesComponent implements OnInit {
     if (confirm('Are you sure you want to unenroll from this course? This action cannot be undone.')) {
       this.enrollmentService.unenrollUserFromCourse(this.currentUserId, courseId).subscribe({
         next: () => {
-          // Reload enrollments after successful unenrollment
           this.loadEnrollments();
         },
         error: (error) => {
@@ -105,6 +119,10 @@ export class MyCoursesComponent implements OnInit {
         }
       });
     }
+  }
+
+  trackByEnrollment(index: number, enrollment: EnrollmentResponse): string {
+    return enrollment.courseId || enrollment.enrollmentId || index.toString();
   }
 
   browseCourses() {

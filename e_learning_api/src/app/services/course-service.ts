@@ -1,13 +1,23 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CourseResponseDto, CategoryResponseDto, Difficulty } from '../../models/course.model';
-import { environment } from '../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {CourseResponseDto, CategoryResponseDto, Difficulty} from '../../models/course.model';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
 
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
   message?: string;
+}
+
+export interface CourseFilters {
+  search?: string;
+  difficulty?: string;
+  category?: string;
+  instructor?: string;
+  isNew?: boolean;
+  page?: number;
+  limit?: number;
 }
 
 @Injectable({
@@ -29,7 +39,11 @@ export class CourseService {
    * Fetch courses with pagination
    */
   getCoursesWithPagination(page: number = 1, limit: number = 10): Observable<ApiResponse<CourseResponseDto[]>> {
-    return this.http.get<ApiResponse<CourseResponseDto[]>>(`${this.apiUrl}/courses?page=${page}&limit=${limit}`);
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get<ApiResponse<CourseResponseDto[]>>(`${this.apiUrl}/courses`, {params});
   }
 
   /**
@@ -40,65 +54,135 @@ export class CourseService {
   }
 
   /**
-   * Fetch courses by category
+   * Get courses filtered by search and/or difficulty (legacy method for backwards compatibility)
    */
-  getCoursesByCategory(category: string): Observable<CourseResponseDto[]> {
-    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/category/${category}`);
+  getFilteredCourses(search: string = '', difficulty: string = ''): Observable<CourseResponseDto[]> {
+    return this.getCoursesWithFilters({search, difficulty});
   }
 
   /**
-   * Fetch featured courses
+   * Get courses with comprehensive filtering options
    */
-  getFeaturedCourses(): Observable<CourseResponseDto[]> {
-    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/featured`);
+  getCoursesWithFilters(filters: CourseFilters): Observable<CourseResponseDto[]> {
+    let params = new HttpParams();
+
+    // Add search parameter
+    if (filters.search && filters.search.trim()) {
+      params = params.set('search', filters.search.trim());
+    }
+
+    // Add difficulty filter
+    if (filters.difficulty && filters.difficulty !== '') {
+      params = params.set('difficulty', filters.difficulty);
+    }
+
+    // Add category filter
+    if (filters.category && filters.category !== '') {
+      params = params.set('category', filters.category);
+    }
+
+    // Add instructor filter
+    if (filters.instructor && filters.instructor.trim()) {
+      params = params.set('instructor', filters.instructor.trim());
+    }
+
+    // Add new courses filter
+    if (filters.isNew !== undefined) {
+      params = params.set('isNew', filters.isNew.toString());
+    }
+
+    // Add pagination
+    if (filters.page !== undefined && filters.page > 0) {
+      params = params.set('page', filters.page.toString());
+    }
+
+    if (filters.limit !== undefined && filters.limit > 0) {
+      params = params.set('limit', filters.limit.toString());
+    }
+
+    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses`, {params});
   }
 
   /**
-   * Fetch all categories
+   * Get courses with comprehensive filtering and pagination response
+   */
+  getCoursesWithFiltersAndPagination(filters: CourseFilters): Observable<ApiResponse<CourseResponseDto[]>> {
+    let params = new HttpParams();
+
+    // Add search parameter
+    if (filters.search && filters.search.trim()) {
+      params = params.set('search', filters.search.trim());
+    }
+
+    // Add difficulty filter
+    if (filters.difficulty && filters.difficulty !== '') {
+      params = params.set('difficulty', filters.difficulty);
+    }
+
+    // Add category filter
+    if (filters.category && filters.category !== '') {
+      params = params.set('category', filters.category);
+    }
+
+    // Add instructor filter
+    if (filters.instructor && filters.instructor.trim()) {
+      params = params.set('instructor', filters.instructor.trim());
+    }
+
+    // Add new courses filter
+    if (filters.isNew !== undefined) {
+      params = params.set('isNew', filters.isNew.toString());
+    }
+
+    // Add pagination (default values)
+    const page = filters.page || 1;
+    const limit = filters.limit || 10;
+    params = params.set('page', page.toString());
+    params = params.set('limit', limit.toString());
+
+    return this.http.get<ApiResponse<CourseResponseDto[]>>(`${this.apiUrl}/courses`, {params});
+  }
+
+  /**
+   * Get all available categories for filtering
    */
   getCategories(): Observable<CategoryResponseDto[]> {
     return this.http.get<CategoryResponseDto[]>(`${this.apiUrl}/courses/categories`);
   }
 
   /**
+   * Get all available difficulties as enum values
+   */
+  getDifficulties(): Difficulty[] {
+    return Object.values(Difficulty);
+  }
+
+  /**
    * Search courses by title or description
    */
   searchCourses(query: string): Observable<CourseResponseDto[]> {
-    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/search?q=${encodeURIComponent(query)}`);
+    if (!query || !query.trim()) {
+      return this.getCourses();
+    }
+
+    const params = new HttpParams().set('search', query.trim());
+    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/search`, {params});
   }
 
   /**
    * Get courses by difficulty level
    */
   getCoursesByDifficulty(difficulty: Difficulty): Observable<CourseResponseDto[]> {
-    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/difficulty/${difficulty}`);
+    const params = new HttpParams().set('difficulty', difficulty);
+    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses`, {params});
   }
 
-  /**
-   * Fetch courses created by the logged-in instructor
-   */
-  getMyCourses(): Observable<CourseResponseDto[]> {
-    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses/my`);
-  }
 
   /**
-   * Update a course (e.g., publish/unpublish or edit)
+   * Get recently created courses (within last 30 days)
    */
-  updateCourse(courseId: string, updateData: Partial<CourseResponseDto>): Observable<CourseResponseDto> {
-    return this.http.patch<CourseResponseDto>(`${this.apiUrl}/courses/${courseId}`, updateData);
-  }
-
-  /**
-   * Create a new course
-   */
-  createCourse(courseData: Partial<CourseResponseDto>): Observable<CourseResponseDto> {
-    return this.http.post<CourseResponseDto>(`${this.apiUrl}/courses`, courseData);
-  }
-
-  /**
-   * Delete a course by ID
-   */
-  deleteCourse(courseId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/courses/${courseId}`);
+  getNewCourses(): Observable<CourseResponseDto[]> {
+    const params = new HttpParams().set('isNew', 'true');
+    return this.http.get<CourseResponseDto[]>(`${this.apiUrl}/courses`, {params});
   }
 }

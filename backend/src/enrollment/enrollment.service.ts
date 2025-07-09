@@ -15,7 +15,10 @@ export class EnrollmentService {
     private progressService: ProgressService,
   ) {}
 
-  async enrollUserInCourse(userId: string, courseId: string) {
+  async enrollUserInCourse(
+    userId: string,
+    courseId: string,
+  ): Promise<EnrollmentWithCourseAndProgress> {
     const existing = await this.prisma.enrollment.findFirst({
       where: { userId, courseId },
     });
@@ -24,11 +27,19 @@ export class EnrollmentService {
 
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
-      include: { prerequisite: true },
+      include: {
+        prerequisite: true,
+        instructor: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
     if (!course) throw new NotFoundException('Course not found');
 
-    if (course?.prerequisiteCourseId) {
+    if (course.prerequisiteCourseId) {
       const prereq = await this.prisma.enrollment.findFirst({
         where: {
           userId,
@@ -42,7 +53,36 @@ export class EnrollmentService {
         );
     }
 
-    return this.prisma.enrollment.create({ data: { userId, courseId } });
+    const enrollment = await this.prisma.enrollment.create({
+      data: { userId, courseId },
+    });
+
+    const progressDto = await this.progressService.getCourseProgress(
+      userId,
+      courseId,
+    );
+
+    return {
+      id: enrollment.id,
+      userId: enrollment.userId,
+      courseId: enrollment.courseId,
+      enrolledAt: enrollment.enrolledAt,
+      course: {
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        category: course.category,
+        difficulty: course.difficulty,
+        published: course.published,
+        image: course.image,
+        instructor: course.instructor,
+      },
+      progress: progressDto.completedLessons,
+      totalLessons: progressDto.totalLessons,
+      progressPercentage: progressDto.progressPercentage,
+      certificateIssued: progressDto.certificateIssued,
+      certificateIssuedAt: progressDto.issuedAt,
+    };
   }
 
   async getDashboard(
@@ -59,12 +99,19 @@ export class EnrollmentService {
             category: true,
             difficulty: true,
             published: true,
+            image: true, // Include image if used
+            instructor: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
           },
         },
       },
     });
 
-    const detailed = await Promise.all(
+    return await Promise.all(
       enrollments.map(async (enr) => {
         const progressDto = await this.progressService.getCourseProgress(
           userId,
@@ -75,7 +122,16 @@ export class EnrollmentService {
           userId: enr.userId,
           courseId: enr.courseId,
           enrolledAt: enr.enrolledAt,
-          course: enr.course,
+          course: {
+            id: enr.course.id,
+            title: enr.course.title,
+            description: enr.course.description,
+            category: enr.course.category,
+            difficulty: enr.course.difficulty,
+            published: enr.course.published,
+            image: enr.course.image,
+            instructor: enr.course.instructor,
+          },
           progress: progressDto.completedLessons,
           totalLessons: progressDto.totalLessons,
           progressPercentage: progressDto.progressPercentage,
@@ -84,8 +140,6 @@ export class EnrollmentService {
         };
       }),
     );
-
-    return detailed;
   }
 
   async unenrollUserFromCourse(userId: string, courseId: string) {

@@ -21,8 +21,8 @@ export class ModuleListComponent implements OnInit {
   ngOnInit() {
     this.learningService.currentCourse$.subscribe(course => {
       this.course = course;
-      if (course && course.modules.length > 0) {
-        this.expandedModules.add(course.modules[0].id);
+      if (course && course.contents.length > 0) {
+        this.expandedModules.add(course.contents[0].id);
       }
     });
 
