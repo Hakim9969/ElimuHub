@@ -6,11 +6,12 @@ import { CourseResponseDto, CategoryResponseDto } from '../../../models/course.m
 import { CourseService } from '../../services/course-service';
 import { UserResponse } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { HeaderComponent } from '../shared/components/header/header.component';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule], // ✅ Add FormsModule here
+  imports: [CommonModule, RouterModule, HeaderComponent, FormsModule], // ✅ Add FormsModule here
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
