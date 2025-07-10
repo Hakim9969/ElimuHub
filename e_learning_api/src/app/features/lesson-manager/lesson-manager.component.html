@@ -1,24 +1,60 @@
-<div class="p-6 max-w-4xl mx-auto bg-white shadow rounded-lg">
-  <h2 class="text-2xl font-bold text-blue-700 mb-4">Lessons for this Module</h2>
+<div class="p-6 max-w-4xl mx-auto bg-white shadow rounded-2xl border border-gray-200">
+  <h2 class="text-2xl font-bold text-emerald-700 mb-6">Lessons for This Module</h2>
 
   <!-- Add Lesson Form -->
-  <div class="mb-6">
-    <input [(ngModel)]="newLesson.title" placeholder="Lesson Title" class="border p-2 mr-2 w-1/2" />
-    <input [(ngModel)]="newLesson.description" placeholder="Lesson Description" class="border p-2 mr-2 w-1/2" />
-    <button (click)="addLesson()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-      Add Lesson
-    </button>
+  <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 mb-8 space-y-4">
+    <input [(ngModel)]="newLesson.title" placeholder="Lesson Title"
+      class="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-emerald-200" />
+
+    <select [(ngModel)]="newLesson.type"
+      class="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-emerald-200">
+      <option disabled selected>Select Lesson Type</option>
+      <option value="VIDEO">Video</option>
+      <option value="PDF">PDF</option>
+      <option value="TEXT">Text</option>
+      <option value="LINK">Link</option>
+    </select>
+
+    <!-- Content URL input -->
+    <div *ngIf="newLesson.type === 'VIDEO' || newLesson.type === 'PDF' || newLesson.type === 'LINK'">
+      <input [(ngModel)]="newLesson.contentUrl" placeholder="Enter Resource URL"
+        class="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-emerald-200" />
+    </div>
+
+    <!-- Text lesson textarea -->
+    <div *ngIf="newLesson.type === 'TEXT'">
+      <textarea [(ngModel)]="newLesson.content" placeholder="Enter Lesson Text"
+        class="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-emerald-200" rows="5"></textarea>
+    </div>
+
+    <div class="flex justify-end">
+      <button (click)="addLesson()"
+        class="bg-emerald-600 text-white px-5 py-2 rounded hover:bg-emerald-700 transition">
+        + Add Lesson
+      </button>
+    </div>
   </div>
 
   <!-- Lessons List -->
   <div *ngIf="lessons.length > 0; else noLessons" class="space-y-4">
-    <div *ngFor="let lesson of lessons" class="border rounded p-4 shadow-sm">
-      <h3 class="text-lg font-semibold text-gray-800">{{ lesson.title }}</h3>
-      <p class="text-gray-600">{{ lesson.description }}</p>
+    <div *ngFor="let lesson of lessons"
+      class="bg-white border border-gray-200 rounded-xl shadow p-4 hover:shadow-md transition">
+      <h3 class="text-lg font-bold text-emerald-800 mb-1">{{ lesson.title }}</h3>
+
+      <p class="text-gray-700" *ngIf="lesson.content">{{ lesson.content }}</p>
+
+      <a *ngIf="lesson.contentUrl" [href]="lesson.contentUrl" target="_blank"
+        class="text-emerald-600 hover:underline text-sm block mt-2">
+        📎 View Resource
+      </a>
+
+      <p class="text-sm text-gray-500 italic mt-2">Type: {{ lesson.type }}</p>
     </div>
   </div>
 
   <ng-template #noLessons>
-    <p class="text-gray-500 italic">No lessons added yet.</p>
+    <div class="text-center text-gray-500 italic py-10">
+      No lessons added yet.
+    </div>
   </ng-template>
 </div>

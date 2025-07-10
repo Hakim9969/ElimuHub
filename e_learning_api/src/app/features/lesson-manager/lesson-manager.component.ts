@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LessonService } from '../../services/lesson.service';
 
+type LessonType = 'VIDEO' | 'PDF' | 'TEXT' | 'LINK';
+
 @Component({
   selector: 'app-lesson-manager',
   standalone: true,
@@ -15,7 +17,18 @@ export class LessonManagerComponent implements OnInit {
   contentId!: string;
 
   lessons: any[] = [];
-  newLesson = { title: '', description: '' };
+
+  newLesson: {
+    title: string;
+    contentUrl?: string;
+    content?: string;
+    type: LessonType;
+  } = {
+    title: '',
+    contentUrl: '',
+    content: '',
+    type: 'VIDEO'
+  };
 
   constructor(private route: ActivatedRoute, private lessonService: LessonService) {}
 
@@ -38,7 +51,12 @@ export class LessonManagerComponent implements OnInit {
     this.lessonService.addLesson(this.contentId, this.newLesson).subscribe({
       next: (data) => {
         this.lessons.push(data);
-        this.newLesson = { title: '', description: '' };
+        this.newLesson = {
+          title: '',
+          contentUrl: '',
+          content: '',
+          type: 'VIDEO'
+        };
       },
       error: (err) => console.error(err),
     });

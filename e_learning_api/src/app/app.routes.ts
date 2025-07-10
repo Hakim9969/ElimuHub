@@ -4,18 +4,27 @@ import { LandingComponent } from './features/landing/landing.component';
 import { AuthComponent } from './core/auth/auth.component';
 import { CoursesComponent } from './features/courses/courses.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
-import {LearningPlatformComponent} from './features/learning-platform/learning-platform.component';
-import {MyCoursesComponent} from './features/my-courses/my-courses.component';
-import {CourseDetailsComponent} from './features/courses-details/courses-details.component';
-import { AdminAuthGuard } from './core/guards/admin-auth.guard';
+import { LearningPlatformComponent } from './features/learning-platform/learning-platform.component';
+import { MyCoursesComponent } from './features/my-courses/my-courses.component';
+import { CourseDetailsComponent } from './features/courses-details/courses-details.component';
+import { InstructorDashboardComponent } from './features/instructor/dashboard/instructor-dashboard.component';
+import { LessonManagerComponent } from './features/lesson-manager/lesson-manager.component';
+
 
 export const routes: Routes = [
-  {path: '', component: LandingComponent},
+  { path: '', component: LandingComponent },
+  { path: 'admin', component: AdminDashboardComponent },
+  { path: 'instructor', component: InstructorDashboardComponent },
   {
-  path: 'admin',
-  canActivate: [AdminAuthGuard],
-  loadComponent: () => import('./features/admin/admin-dashboard.component').then(m => m.AdminDashboardComponent)
+    path: 'instructor/course/:courseId/contents', component: CourseContentComponent
   },
+
+{
+  path: 'instructor/course/:courseId/content/:contentId/lessons',
+  component: LessonManagerComponent
+}
+,
+
   { path: 'courses', component: CoursesComponent },
   { path: 'enroll/learn/:courseId', component: LearningPlatformComponent },
   { path: 'enroll/my-courses', component: MyCoursesComponent },

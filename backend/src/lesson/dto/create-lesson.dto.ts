@@ -9,6 +9,10 @@ export class CreateLessonDto {
   @IsString()
   contentUrl?: string;
 
+  @IsOptional()
+  @IsString()
+  content?: string;
+
   @IsEnum(LessonType)
   type: LessonType;
 }

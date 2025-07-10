@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { CourseService } from '../../../services/course-service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { CourseService } from '../../../services/course.service';
 
 @Component({
   selector: 'app-instructor-dashboard',

@@ -114,7 +114,6 @@ export interface QuestionDto {
   type: 'multiple-choice' | 'true-false';
 }
 
-// ---- Enrollment ----
 
 export interface EnrollmentResponseDto {
   enrollmentId: string;
@@ -128,7 +127,6 @@ export interface EnrollmentResponseDto {
   certificateIssuedAt?: Date;
 }
 
-// ---- Announcements, Reviews, Certificates ----
 
 export interface Announcement {
   id: string;

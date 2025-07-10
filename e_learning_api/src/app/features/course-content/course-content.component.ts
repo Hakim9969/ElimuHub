@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../services/content.service';
-import { CourseService } from '../../services/course-service';
+import { CourseService } from '../../services/course.service';
 
 @Component({
     selector: 'app-course-content',

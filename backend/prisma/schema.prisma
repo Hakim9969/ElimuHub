@@ -85,6 +85,7 @@ model Lesson {
   id         String     @id @default(uuid())
   title      String
   contentUrl String?
+  content    String?
   type       LessonType
   moduleId   String
   createdAt  DateTime   @default(now())
