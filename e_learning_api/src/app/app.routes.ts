@@ -9,6 +9,7 @@ import { MyCoursesComponent } from './features/my-courses/my-courses.component';
 import { CourseDetailsComponent } from './features/courses-details/courses-details.component';
 import { InstructorDashboardComponent } from './features/instructor/dashboard/instructor-dashboard.component';
 import { LessonManagerComponent } from './features/lesson-manager/lesson-manager.component';
+import { QuizBuilderComponent } from './features/quiz-builder/quiz-builder.component';
 
 
 export const routes: Routes = [
@@ -19,11 +20,16 @@ export const routes: Routes = [
     path: 'instructor/course/:courseId/contents', component: CourseContentComponent
   },
 
+  {
+    path: 'instructor/course/:courseId/content/:contentId/lessons',
+    component: LessonManagerComponent
+  },
+
 {
-  path: 'instructor/course/:courseId/content/:contentId/lessons',
-  component: LessonManagerComponent
-}
-,
+  path: 'instructor/course/:courseId/quiz',
+  component: QuizBuilderComponent
+},
+
 
   { path: 'courses', component: CoursesComponent },
   { path: 'enroll/learn/:courseId', component: LearningPlatformComponent },

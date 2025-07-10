@@ -72,8 +72,7 @@
 
         <div class="mt-4 flex justify-end gap-4">
           <button type="button" (click)="resetForm()" class="text-gray-500">Cancel</button>
-          <button type="submit"
-            class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition">
+          <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition">
             {{ selectedCourse ? 'Update Course' : 'Save Course' }}
           </button>
         </div>
@@ -128,6 +127,13 @@
                     class="bg-gray-600 text-white px-3 py-1 text-xs rounded hover:bg-gray-700 transition">
                     Delete
                   </button>
+
+                  <button [routerLink]="['/instructor/course', course.id, 'quiz']"
+                    class="bg-purple-600 text-white px-3 py-1 text-xs rounded hover:bg-purple-700 transition">
+                    Make Quiz
+                  </button>
+
+
                 </td>
               </tr>
             </tbody>
