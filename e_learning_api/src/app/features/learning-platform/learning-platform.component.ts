@@ -131,6 +131,6 @@ export class LearningPlatformComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/courses']);
+    this.router.navigate(['/enroll/my-courses']);
   }
 }

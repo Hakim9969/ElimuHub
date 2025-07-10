@@ -49,14 +49,13 @@
       </a>
     </div>
 
-
     <!-- Lesson Content -->
     <div class="prose max-w-none mb-8">
       <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ currentLesson.content }}</div>
     </div>
 
     <!-- Quiz Section -->
-    <div *ngIf="currentLesson.quiz && !showQuiz" class="border-t pt-6">
+    <div *ngIf="currentLesson.quiz && !showQuiz && !isLessonCompleted" class="border-t pt-6">
       <div class="text-center">
         <h3 class="text-lg font-semibold text-gray-800 mb-2">Ready for the Quiz?</h3>
         <p class="text-gray-600 mb-4">Test your understanding of this lesson</p>
@@ -65,6 +64,20 @@
           class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium"
         >
           Start Quiz
+        </button>
+      </div>
+    </div>
+
+    <!-- Mark as Complete Button (for lessons without quizzes) -->
+    <div *ngIf="!currentLesson.quiz && !isLessonCompleted" class="border-t pt-6">
+      <div class="text-center">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Lesson Complete?</h3>
+        <p class="text-gray-600 mb-4">Mark this lesson as completed when you're ready</p>
+        <button
+          (click)="markLessonComplete()"
+          class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium"
+        >
+          Mark as Complete
         </button>
       </div>
     </div>
@@ -105,7 +118,4 @@
       <p class="text-gray-600">Choose a lesson from the module list to get started</p>
     </div>
   </ng-template>
-
 </div>
-
-
