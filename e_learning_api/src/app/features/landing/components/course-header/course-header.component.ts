@@ -6,12 +6,11 @@ import { CourseResponseDto, CategoryResponseDto, Difficulty } from '../../../../
 import { AuthService } from '../../../../services/auth.service';
 import { CourseService, CourseFilters } from '../../../../services/course.service';
 import { EnrollmentService } from '../../../../services/enrollment.service';
-import { FooterComponent } from '../../../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-course-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FooterComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './course-header.component.html',
   styleUrl: './course-header.component.css'
 })

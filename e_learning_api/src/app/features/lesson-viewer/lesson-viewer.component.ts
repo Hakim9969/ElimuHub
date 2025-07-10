@@ -26,12 +26,11 @@ export class LessonViewerComponent implements OnInit {
       this.currentLesson = lesson;
       this.showQuiz = false;
       this.isLessonCompleted = lesson ? this.learningService.isLessonCompleted(lesson.id) : false;
+
+      if ( lesson && lesson.type === 'PDF' && lesson.contentUrl) {
+        this.sanitizedPdfUrl =  this.sanitizer.bypassSecurityTrustResourceUrl(lesson.contentUrl);
+      }
     });
-    if (this.currentLesson?.type === 'PDF' && this.currentLesson?.contentUrl) {
-      this.sanitizedPdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.currentLesson.contentUrl
-      );
-    }
   }
 
   startQuiz() {
@@ -44,7 +43,15 @@ export class LessonViewerComponent implements OnInit {
       this.isLessonCompleted = true;
     }
   }
-  getSafeYoutubeUrl(url: string): SafeResourceUrl {
+  markLessonComplete() {
+    if (this.currentLesson) {
+      this.learningService.markLessonCompleted(this.currentLesson.id);
+      this.isLessonCompleted = true;
+    }
+  }
+
+
+    getSafeYoutubeUrl(url: string): SafeResourceUrl {
     const videoId = this.extractYoutubeVideoId(url);
     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
