@@ -3,7 +3,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {Subject, debounceTime, distinctUntilChanged, takeUntil, Observable} from 'rxjs';
 import {CourseResponseDto, Difficulty, CategoryResponseDto} from '../../../models/course.model';
-import {CourseService, CourseFilters} from '../../services/course-service';
+import {CourseService, CourseFilters} from '../../services/course.service';
 import {AuthService} from '../../services/auth.service';
 import {EnrollmentService} from '../../services/enrollment.service';
 import {HeaderComponent} from '../shared/components/header/header.component';

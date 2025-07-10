@@ -4,7 +4,7 @@ import {Router, RouterLink, RouterModule} from '@angular/router';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { CourseResponseDto, CategoryResponseDto, Difficulty } from '../../../../../models/course.model';
 import { AuthService } from '../../../../services/auth.service';
-import { CourseService, CourseFilters } from '../../../../services/course-service';
+import { CourseService, CourseFilters } from '../../../../services/course.service';
 import { EnrollmentService } from '../../../../services/enrollment.service';
 import { FooterComponent } from '../../../shared/components/footer/footer.component';
 

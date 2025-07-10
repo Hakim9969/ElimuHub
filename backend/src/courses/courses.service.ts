@@ -193,36 +193,35 @@ export class CoursesService {
   }
 
   async remove(id: string, user: any) {
-  const course = await this.prisma.course.findUnique({ where: { id } });
-  if (!course) throw new NotFoundException('Course not found');
-  
-  // Allow deletion if user is the instructor OR an admin
-  if (course.instructorId !== user.id && user.role !== 'ADMIN') {
-    throw new ForbiddenException('You cannot delete this course');
+    const course = await this.prisma.course.findUnique({ where: { id } });
+    if (!course) throw new NotFoundException('Course not found');
+
+    // Allow deletion if user is the instructor OR an admin
+    if (course.instructorId !== user.id && user.role !== 'ADMIN') {
+      throw new ForbiddenException('You cannot delete this course');
+    }
+
+    return this.prisma.course.delete({ where: { id } });
   }
 
-  return this.prisma.course.delete({ where: { id } });
-}
+  async removeByCategory(name: string) {
+    const courses = await this.prisma.course.findMany({
+      where: { category: name },
+    });
 
-async removeByCategory(name: string) {
-  const courses = await this.prisma.course.findMany({
-    where: { category: name },
-  });
+    if (!courses.length) {
+      throw new NotFoundException(`No courses found under category "${name}"`);
+    }
 
-  if (!courses.length) {
-    throw new NotFoundException(`No courses found under category "${name}"`);
+    // Delete all courses under this category
+    await this.prisma.course.deleteMany({
+      where: { category: name },
+    });
+
+    return {
+      message: `Deleted ${courses.length} course(s) under category "${name}"`,
+    };
   }
-
-  // Delete all courses under this category
-  await this.prisma.course.deleteMany({
-    where: { category: name },
-  });
-
-  return {
-    message: `Deleted ${courses.length} course(s) under category "${name}"`,
-  };
-}
-
 
   private transformCourse(course: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -244,7 +243,8 @@ async removeByCategory(name: string) {
         id: instructor.id,
         name: instructor.name,
       },
-      contents: modules?.map((module) => ({
+      contents:
+        modules?.map((module) => ({
           id: module.id,
           title: module.title,
           description: module.description,
